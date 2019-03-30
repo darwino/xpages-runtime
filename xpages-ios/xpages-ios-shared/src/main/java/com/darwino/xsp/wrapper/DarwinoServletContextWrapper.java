@@ -1,4 +1,4 @@
-package com.darwino.xsp;
+package com.darwino.xsp.wrapper;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;

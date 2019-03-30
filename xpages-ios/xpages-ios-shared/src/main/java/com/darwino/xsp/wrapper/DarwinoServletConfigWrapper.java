@@ -1,4 +1,4 @@
-package com.darwino.xsp;
+package com.darwino.xsp.wrapper;
 
 import java.util.Enumeration;
 
@@ -18,7 +18,7 @@ public class DarwinoServletConfigWrapper implements ServletConfig {
 		return servletContext.getInitParameter(param);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({ "rawtypes" })
 	@Override
 	public Enumeration getInitParameterNames() {
 		return servletContext.getInitParameterNames();
