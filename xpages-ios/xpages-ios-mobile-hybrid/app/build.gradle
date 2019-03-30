@@ -1,0 +1,110 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion '28.0.3'
+    defaultConfig {
+        applicationId "com.darwino.xsp.ios.app"
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Exclude some files
+    // http://stackoverflow.com/questions/37586800/android-gradle-duplicate-files-copied-in-apk-meta-inf-license-txt
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+        exclude 'META-INF/ASL2.0'
+        exclude 'openapi/*'
+        exclude 'plugin.xml'
+        exclude 'copyright.txt'
+        exclude 'plugin.properties'
+        exclude 'about_files/LICENSE-2.0.txt'
+    }
+}
+
+configurations {
+    nativeDeps
+}
+dependencies {
+    // https://openflow.stanford.edu/display/Beacon/Beacon+on+Android/index.html#BeacononAndroid-Java.Beans for beans.jar
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+    testImplementation 'junit:junit:4.12'
+
+    implementation "com.darwino:dwo-android-platform-hybrid:${DARWINO_VERSION}"
+
+    implementation "com.darwino:dwo-web-darwino:${DARWINO_VERSION}"
+
+    def ignoreServlet = {
+        exclude group: 'com.ibm.xsp', module: 'com.ibm.pvc.servlet'
+    }
+
+    implementation "com.darwino.xsp.ios:xpages-ios-shared:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-ios-mobile:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
+    implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
+    implementation 'xerces:xercesImpl:2.11.0'
+//    implementation 'com.github.panga:java-beans-lite:1.0.2:patch'
+
+    //compile "com.darwino:dwo-native-sqlite:${DARWINO_VERSION}"
+    nativeDeps (
+        [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'so', classifier: 'android-arm64-v8a' ],
+        [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'so', classifier: 'android-armeabi'],
+        [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'so', classifier: 'android-armeabi-v7a'],
+        [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'so', classifier: 'android-x86'],
+        [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'so', classifier: 'android-x86_64']
+    )
+    //nativeDeps group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}"
+}
+
+task copyNativeLibraries {
+    description 'Copy the native SQLite Android libraries'
+    //dependsOn configuration
+    copy {
+        from configurations.nativeDeps[0]
+        into 'src/main/jniLibs/arm64-v8a'
+        rename {'libjsonstore-sqlite.so'}
+    }
+    copy {
+        from configurations.nativeDeps[1]
+        into 'src/main/jniLibs/armeabi'
+        rename {'libjsonstore-sqlite.so'}
+    }
+    copy {
+        from configurations.nativeDeps[2]
+        into 'src/main/jniLibs/armeabi-v7a'
+        rename {'libjsonstore-sqlite.so'}
+    }
+    copy {
+        from configurations.nativeDeps[3]
+        into 'src/main/jniLibs/x86'
+        rename {'libjsonstore-sqlite.so'}
+    }
+    copy {
+        from configurations.nativeDeps[4]
+        into 'src/main/jniLibs/x86_64'
+        rename {'libjsonstore-sqlite.so'}
+    }
+}

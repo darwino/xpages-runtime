@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.darwino.xsp.ios</groupId>
+		<artifactId>xpages-ios</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>xpages-ios-mobile-hybrid</artifactId>
+
+	<packaging>pom</packaging>
+	<build>
+		<plugins>
+			<plugin>
+				<!-- https://github.com/LendingClub/gradle-maven-plugin -->
+				<groupId>org.fortasoft</groupId>
+				<artifactId>gradle-maven-plugin</artifactId>
+				<version>1.0.8</version>
+				<configuration>
+					<gradleVersion>4.1</gradleVersion>
+					<tasks>
+						<!-- this is the debug APK for now -->
+						<task>assembleDebug</task>
+					</tasks>
+				</configuration>
+				<executions>
+					<execution>
+						<!-- You can bind this to any phase you like -->
+						<phase>compile</phase>
+						<goals>
+							<!-- goal must be "invoke" -->
+							<goal>invoke</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

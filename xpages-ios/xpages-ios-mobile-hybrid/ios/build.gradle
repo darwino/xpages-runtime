@@ -1,0 +1,83 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenLocal()
+    }
+    dependencies {
+        // Multi-OS Engine plugin
+        classpath group: 'org.multi-os-engine', name: 'moe-gradle', version: '1.3.+'
+    }
+}
+
+// Apply plugins
+apply plugin: 'eclipse'
+apply plugin: 'moe'
+
+// Set source and target to Java 8
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+// Set maven repository
+repositories {
+    jcenter()
+}
+
+// Exclude all files from Gradle's test runner
+test { exclude '**' }
+
+// Setup Multi-OS Engine
+moe {
+    xcode {
+        project 'xcode/ios.xcodeproj'
+        mainTarget 'ios'
+        testTarget 'ios-Test'
+
+        // Uncomment and change these settings if you are working with a Xcode workspace
+        // workspace 'xcode/ios.xcworkspace'
+        // mainScheme 'ios'
+        // testScheme 'ios-Test'
+    }
+    proguardLevel 'all'
+}
+
+configurations {
+    nativeDeps
+}
+dependencies {
+    // Compile with 'jar' files in the project's 'lib' directory
+    implementation fileTree(dir: 'lib', include: '*.jar')
+
+    implementation "com.darwino:dwo-ios-moe-platform-hybrid:${DARWINO_VERSION}"
+
+    implementation "com.darwino:dwo-web-darwino:${DARWINO_VERSION}"
+
+    def ignoreServlet = {
+        exclude group: 'com.ibm.xsp', module: 'com.ibm.pvc.servlet'
+    }
+
+    implementation "com.darwino.xsp.ios:xpages-ios-shared:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-ios-mobile:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
+    implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
+
+    nativeDeps (
+        [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'a', classifier: 'ios-universal' ]
+    )
+}
+task copyNativeLibraries {
+    description 'Copy the native SQLite iOS libraries'
+    copy {
+        from configurations.nativeDeps[0]
+        into 'libs'
+        rename {'libJsonstoreUniversal.a'}
+    }
+}
+
+// Setup Eclipse
+eclipse {
+    // Set Multi-OS Engine nature
+    project {
+        natures 'org.multi-os-engine.project'
+    }
+}
