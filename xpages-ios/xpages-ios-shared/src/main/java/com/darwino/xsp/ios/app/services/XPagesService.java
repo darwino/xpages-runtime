@@ -1,6 +1,10 @@
 package com.darwino.xsp.ios.app.services;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -15,9 +19,12 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import com.darwino.commons.services.HttpService;
 import com.darwino.commons.services.HttpServiceContext;
 import com.darwino.j2ee.servlet.server.http.ServletServiceContext;
+import com.darwino.xsp.util.XSPUtil;
 import com.darwino.xsp.wrapper.DarwinoServletConfigWrapper;
 import com.darwino.xsp.wrapper.DarwinoServletContextWrapper;
 import com.darwino.xsp.wrapper.DarwinoServletRequestWrapper;
+import com.ibm.commons.util.StringUtil;
+import com.ibm.commons.util.io.StreamUtil;
 import com.ibm.xsp.webapp.DesignerFacesServlet;
 
 public class XPagesService extends HttpService {
@@ -32,9 +39,30 @@ public class XPagesService extends HttpService {
 		HttpServletRequest req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest());
 		HttpServletResponse res = ((ServletServiceContext)serviceContext).getHttpResponse();
 		
-		System.out.println("path info: " + req.getPathInfo());
 		try {
-			delegate.service(req, res);
+			String pathInfo = StringUtil.toString(req.getPathInfo());
+			if(!pathInfo.startsWith("/xsp/")) {
+				delegate.service(req, res);
+			} else {
+				// Service from a local file
+				String resPath = pathInfo.substring("/xsp".length());
+				InputStream is = XSPUtil.getResourceAsStream(Thread.currentThread().getContextClassLoader(), resPath);
+				if(is != null) {
+					try {
+						String contentType = URLConnection.guessContentTypeFromName(resPath);
+						res.setContentType(contentType);
+						
+						OutputStream os = res.getOutputStream();
+						try {
+							StreamUtil.copyStream(is, os);
+						} finally {
+							StreamUtil.close(os);
+						}
+					} finally {
+						StreamUtil.close(is);
+					}
+				}
+			}
 		} catch (ServletException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
