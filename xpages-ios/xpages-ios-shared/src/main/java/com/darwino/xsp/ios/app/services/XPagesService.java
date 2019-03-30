@@ -15,9 +15,9 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import com.darwino.commons.services.HttpService;
 import com.darwino.commons.services.HttpServiceContext;
 import com.darwino.j2ee.servlet.server.http.ServletServiceContext;
-import com.darwino.xsp.DarwinoServletConfigWrapper;
-import com.darwino.xsp.DarwinoServletContextWrapper;
-import com.darwino.xsp.DarwinoServletRequestWrapper;
+import com.darwino.xsp.wrapper.DarwinoServletConfigWrapper;
+import com.darwino.xsp.wrapper.DarwinoServletContextWrapper;
+import com.darwino.xsp.wrapper.DarwinoServletRequestWrapper;
 import com.ibm.xsp.webapp.DesignerFacesServlet;
 
 public class XPagesService extends HttpService {
