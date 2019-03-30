@@ -3,7 +3,6 @@ package com.darwino.xsp.ios.app.services;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.net.URLConnection;
 
 import javax.servlet.ServletConfig;
@@ -44,6 +43,7 @@ public class XPagesService extends HttpService {
 			if(!pathInfo.startsWith("/xsp/")) {
 				delegate.service(req, res);
 			} else {
+				// TODO replace with a real resources servlet if possible
 				// Service from a local file
 				String resPath = pathInfo.substring("/xsp".length());
 				InputStream is = XSPUtil.getResourceAsStream(Thread.currentThread().getContextClassLoader(), resPath);

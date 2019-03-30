@@ -15,6 +15,8 @@
  */
 package org.openntf.xpages.runtime;
 
+import com.ibm.commons.vfs.VFS;
+import com.ibm.commons.vfs.VFSException;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.designer.runtime.server.ServletExecutionContext;
 
@@ -48,5 +50,16 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
 			}
 		}
 		return this.appDirectory;
+	}
+	
+	@Override
+	public VFS getVFS() {
+		VFS vfs = super.getVFS();
+//		try {
+//			System.out.println("vfs says the file is " + vfs.getFile("src/main/resources/contactForm.jss").exists());
+//		} catch (VFSException e) {
+//			throw new RuntimeException(e);
+//		}
+		return vfs;
 	}
 }

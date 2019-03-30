@@ -12,6 +12,8 @@ import javax.faces.context.FacesContext;
 import com.ibm.xsp.page.compiled.NoSuchComponentException;
 import com.ibm.xsp.page.compiled.PageExpressionEvaluator;
 import java.lang.String;
+import com.ibm.xsp.resource.ScriptResource;
+import com.ibm.xsp.component.FacesPageProvider;
 import com.ibm.xsp.component.UIViewRootEx2;
 import com.ibm.xsp.component.UIIncludeComposite;
 import com.ibm.xsp.component.UIPassThroughTag;
@@ -86,10 +88,28 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
             throw new NoSuchComponentException(id);
         }
         
+        protected void initIncluderAsRoot(FacesContext context,
+                PageExpressionEvaluator evaluator, UIComponent root) {
+            ScriptResource resources = new ScriptResource();
+            resources.setComponent(root);
+            resources.setClientSide(false);
+            resources.setSrc("/contactForm.jss");
+            FacesPageProvider asPageProvider = root instanceof FacesPageProvider ?
+                    (FacesPageProvider) root : null;
+            if( null != asPageProvider ){
+                asPageProvider.addResource(resources);
+            }
+        }
+
         private UIComponent createView(FacesContext context, 
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             UIViewRootEx2 result = new UIViewRootEx2();
             initViewRoot(result);
+            ScriptResource resources = new ScriptResource();
+            resources.setComponent(result);
+            resources.setClientSide(false);
+            resources.setSrc("/contactForm.jss");
+            result.addResource(resources);
             return result;
         }
 
