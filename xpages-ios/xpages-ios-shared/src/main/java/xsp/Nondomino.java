@@ -69,19 +69,23 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
             new ComponentInfo(true, new int[]{25}), // 26 dt4
             ComponentInfo.EMPTY_NORMAL, // 27 text13
             new ComponentInfo(true, new int[]{27}), // 28 dd4
-            new ComponentInfo(true, new int[]{14, 16, 18, 20, 22, 24, 26, 28}), // 29 dl
-            new ComponentInfo(true, new int[]{12, 29}), // 30 fieldset
-            new ComponentInfo(false, new int[]{1, 8, 10, 30}), // 31 "layout"
-            new ComponentInfo(false, new int[]{31}), // 32 view
+            ComponentInfo.EMPTY_MARKUP, // 29 text14
+            new ComponentInfo(true, new int[]{29}), // 30 dt5
+            ComponentInfo.EMPTY_NORMAL, // 31 text15
+            new ComponentInfo(true, new int[]{31}), // 32 dd5
+            new ComponentInfo(true, new int[]{14, 16, 18, 20, 22, 24, 26, 28, 30, 32}), // 33 dl
+            new ComponentInfo(true, new int[]{12, 33}), // 34 fieldset
+            new ComponentInfo(false, new int[]{1, 8, 10, 34}), // 35 "layout"
+            new ComponentInfo(false, new int[]{35}), // 36 view
         };
         
         public NondominoPage() {
-            super(32, s_infos );
+            super(36, s_infos );
         }
         
         public int getComponentForId(String id) throws NoSuchComponentException { 
             if( "layout".equals(id) )
-                return 31;
+                return 35;
             if( "refresher".equals(id) )
                 return 8;
             if( "refresh".equals(id) )
@@ -93,9 +97,9 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator)
                 throws NoSuchComponentException { 
             switch (id) {
-            case 32:
+            case 36:
                 return createView(context, parent, evaluator);
-            case 31:
+            case 35:
                 return createLayout(context, parent, evaluator);
             case 1:
                 return createP(context, parent, evaluator);
@@ -119,13 +123,13 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
                 return createRefresh(context, parent, evaluator);
             case 9:
                 return createEventHandler(context, parent, evaluator);
-            case 30:
+            case 34:
                 return createFieldset(context, parent, evaluator);
             case 12:
                 return createLegend(context, parent, evaluator);
             case 11:
                 return createText5(context, parent, evaluator);
-            case 29:
+            case 33:
                 return createDl(context, parent, evaluator);
             case 14:
                 return createDt(context, parent, evaluator);
@@ -159,6 +163,14 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
                 return createDd4(context, parent, evaluator);
             case 27:
                 return createText13(context, parent, evaluator);
+            case 30:
+                return createDt5(context, parent, evaluator);
+            case 29:
+                return createText14(context, parent, evaluator);
+            case 32:
+                return createDd5(context, parent, evaluator);
+            case 31:
+                return createText15(context, parent, evaluator);
             }
             throw new NoSuchComponentException(id);
         }
@@ -444,6 +456,37 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
             String sourceId2 = "layout/fieldset[1]/dl[1]/dd[4]/xp:text[1]/@value";
             String valueExpr = "#{facesContext.styleKit.name}";
             ValueBinding value = evaluator.createValueBinding(result, valueExpr, sourceId2,Object.class);
+            result.setValueBinding("value", value);
+            return result;
+        }
+
+        private UIComponent createDt5(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            UIPassThroughTag component = new UIPassThroughTag();
+            component.setTag("dt");
+            return component;
+        }
+
+        private UIComponent createText14(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            UIPassThroughText textComp = new UIPassThroughText();
+            textComp.setText("os.name");
+            return textComp;
+        }
+
+        private UIComponent createDd5(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            UIPassThroughTag component = new UIPassThroughTag();
+            component.setTag("dd");
+            return component;
+        }
+
+        private UIComponent createText15(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            XspOutputText result = new XspOutputText();
+            String sourceId = "layout/fieldset[1]/dl[1]/dd[5]/xp:text[1]/@value";
+            String valueExpr = "#{javascript:java.lang.System.getProperty(\'os.name\')}";
+            ValueBinding value = evaluator.createValueBinding(result, valueExpr, sourceId,Object.class);
             result.setValueBinding("value", value);
             return result;
         }

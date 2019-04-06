@@ -1,0 +1,22 @@
+assembleDebug.doLast {
+    android.applicationVariants.all { variant ->
+if (variant.buildType.name == 'debug') {
+            variant.outputs.outputFile.each { output ->
+def debugBuildTask = tasks.create(name: "addUnderscoreDirs") {
+// pass the APK path to the script to copy the underscore dirs and resign the APK
+def cmd = "./build-extras-underscore-dirs.sh " + output
+// execute the script
+def proc = cmd.execute(null, projectDir)
+// wait for script to complete, consume it's output
+def sout = new StringBuilder(), serr = new StringBuilder()
+                    proc.consumeProcessOutput(sout, serr)
+                    proc.waitForOrKill(10000)
+// uncomment this line to debug script output when running `gradlew assembleDebug`
+// println "out> $sout err> $serr"
+                }
+// make sure the scrpit is called after the APK is assembled
+                debugBuildTask.mustRunAfter variant.assemble
+            }
+        }
+    }
+}
