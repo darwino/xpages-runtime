@@ -18,8 +18,8 @@
 -->
 <faces-config>
 	<managed-bean>
-	    <managed-bean-name>randomString</managed-bean-name>
-	    <managed-bean-class>bean.RandomString</managed-bean-class>
-	    <managed-bean-scope>application</managed-bean-scope>
-	  </managed-bean>
+		<managed-bean-name>randomString</managed-bean-name>
+		<managed-bean-class>bean.RandomString</managed-bean-class>
+		<managed-bean-scope>application</managed-bean-scope>
+	</managed-bean>
 </faces-config>
