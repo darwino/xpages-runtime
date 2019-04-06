@@ -71,6 +71,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.designer.lib.jsf</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.xsp.domino</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
