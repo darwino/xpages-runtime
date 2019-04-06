@@ -5,6 +5,7 @@ import com.darwino.commons.services.impl.AbstractServiceFactory;
 import com.darwino.xsp.ios.app.services.XPagesService;
 
 public class XPagesServiceFactory extends AbstractServiceFactory {
+	private final XPagesService service = new XPagesService();
 
 	protected XPagesServiceFactory() {
 		super(".xsp");
@@ -12,6 +13,6 @@ public class XPagesServiceFactory extends AbstractServiceFactory {
 	
 	@Override
 	protected HttpService createService(String path, String pathInfo) {
-		return new XPagesService();
+		return service;
 	}
 }

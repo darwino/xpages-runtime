@@ -25,11 +25,13 @@ import com.darwino.xsp.wrapper.DarwinoServletRequestWrapper;
 import com.ibm.commons.util.StringUtil;
 import com.ibm.commons.util.io.StreamUtil;
 import com.ibm.xsp.webapp.DesignerFacesServlet;
+import com.ibm.xsp.webapp.DesignerGlobalResourceServlet;
 
 public class XPagesService extends HttpService {
 	private DesignerFacesServlet delegate;
 	private JakartaConfigureCoreListener listener = new JakartaConfigureCoreListener();
 	private boolean initialized;
+	private DesignerGlobalResourceServlet globalResources;
 
 	@Override
 	public void service(HttpServiceContext serviceContext) {
@@ -42,6 +44,11 @@ public class XPagesService extends HttpService {
 			String pathInfo = StringUtil.toString(req.getPathInfo());
 			if(!pathInfo.startsWith("/xsp/")) {
 				delegate.service(req, res);
+			} else if(pathInfo.startsWith("/xsp/.ibmxspres/")) {
+				// globalResources expects pathInfo to be e.g. "/dojoroot/dojo/dojo.js", not "/xsp/.ibmxspres/dojoroot/dojo/dojo.js"
+				String prefix = "/.xsp/xsp/.ibmxspres";
+				req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest(), prefix);
+				globalResources.service(req, res);
 			} else {
 				// TODO replace with a real resources servlet if possible
 				// Service from a local file
@@ -78,13 +85,16 @@ public class XPagesService extends HttpService {
 			listener.contextInitialized(sce);
 			
 			this.delegate = new DesignerFacesServlet();
+			this.globalResources = new DesignerGlobalResourceServlet();
 			
 			JakartaPlatform.initContext(context);
 			try {
 				delegate.init(conf);
+				globalResources.init(conf);
 			} catch (ServletException e) {
 				throw new RuntimeException(e);
 			}
+			
 			
 			this.initialized = true;
 		}
