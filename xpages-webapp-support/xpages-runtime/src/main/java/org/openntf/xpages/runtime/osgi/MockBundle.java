@@ -30,6 +30,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
+import com.ibm.commons.util.PathUtil;
+
 public class MockBundle implements Bundle {
 	
 	private final Object context;
@@ -150,7 +152,12 @@ public class MockBundle implements Bundle {
 
     @Override
     public Enumeration<URL> findEntries(String s, String s1, boolean b) {
-        return null;
+    	// Not a perfect version, but it'll do
+        try {
+			return context.getClass().getClassLoader().getResources(PathUtil.concat(s, s1, '/'));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
     }
 
     @Override
