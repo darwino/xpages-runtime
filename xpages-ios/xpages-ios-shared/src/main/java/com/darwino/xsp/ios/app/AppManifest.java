@@ -52,7 +52,7 @@ public class AppManifest extends DarwinoManifest {
 	
 	@Override
 	public String getMainPageUrl() {
-		return "/.xsp/LibertyTest.xsp";
+		return "/.xsp/Nondomino.xsp";
 	}
 	
 	@Override
