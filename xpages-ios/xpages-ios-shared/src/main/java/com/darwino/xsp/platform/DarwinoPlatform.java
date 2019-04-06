@@ -59,7 +59,6 @@ public class DarwinoPlatform extends WebAppServerPlatform {
 				try {
 					ZipEntry entry = zis.getNextEntry();
 					while(entry != null) {
-						System.out.println("expanding " + entry.getName());
 						if(entry.isDirectory()) {
 							File subdir = new File(zipOut, entry.getName().replace('/', File.separatorChar));
 							subdir.mkdirs();
