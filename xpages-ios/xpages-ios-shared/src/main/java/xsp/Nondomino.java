@@ -49,45 +49,46 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
             new ComponentInfo(false, new int[]{1, 3, 5}), // 6 "refresher"
             ComponentInfo.EMPTY_NORMAL, // 7 eventHandler
             new ComponentInfo(false, new int[]{7}), // 8 "refresh"
-            ComponentInfo.EMPTY_MARKUP, // 9 text4
-            new ComponentInfo(true, new int[]{9}), // 10 legend
-            ComponentInfo.EMPTY_MARKUP, // 11 text5
-            new ComponentInfo(true, new int[]{11}), // 12 dt
-            ComponentInfo.EMPTY_NORMAL, // 13 text6
-            new ComponentInfo(true, new int[]{13}), // 14 dd
-            ComponentInfo.EMPTY_MARKUP, // 15 text7
-            new ComponentInfo(true, new int[]{15}), // 16 dt2
-            ComponentInfo.EMPTY_NORMAL, // 17 text8
-            new ComponentInfo(true, new int[]{17}), // 18 dd2
-            ComponentInfo.EMPTY_MARKUP, // 19 text9
-            new ComponentInfo(true, new int[]{19}), // 20 dt3
-            ComponentInfo.EMPTY_NORMAL, // 21 text10
-            new ComponentInfo(true, new int[]{21}), // 22 dd3
-            ComponentInfo.EMPTY_MARKUP, // 23 text11
-            new ComponentInfo(true, new int[]{23}), // 24 dt4
-            ComponentInfo.EMPTY_NORMAL, // 25 text12
-            new ComponentInfo(true, new int[]{25}), // 26 dd4
-            ComponentInfo.EMPTY_MARKUP, // 27 text13
-            new ComponentInfo(true, new int[]{27}), // 28 dt5
-            ComponentInfo.EMPTY_NORMAL, // 29 text14
-            new ComponentInfo(true, new int[]{29}), // 30 dd5
-            ComponentInfo.EMPTY_MARKUP, // 31 text15
-            new ComponentInfo(true, new int[]{31}), // 32 dt6
-            ComponentInfo.EMPTY_NORMAL, // 33 text16
-            new ComponentInfo(true, new int[]{33}), // 34 dd6
-            new ComponentInfo(true, new int[]{12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34}), // 35 dl
-            new ComponentInfo(true, new int[]{10, 35}), // 36 fieldset
-            new ComponentInfo(false, new int[]{6, 8, 36}), // 37 "layout"
-            new ComponentInfo(false, new int[]{37}), // 38 view
+            new ComponentInfo(true, new int[]{8}), // 9 p4
+            ComponentInfo.EMPTY_MARKUP, // 10 text4
+            new ComponentInfo(true, new int[]{10}), // 11 legend
+            ComponentInfo.EMPTY_MARKUP, // 12 text5
+            new ComponentInfo(true, new int[]{12}), // 13 dt
+            ComponentInfo.EMPTY_NORMAL, // 14 text6
+            new ComponentInfo(true, new int[]{14}), // 15 dd
+            ComponentInfo.EMPTY_MARKUP, // 16 text7
+            new ComponentInfo(true, new int[]{16}), // 17 dt2
+            ComponentInfo.EMPTY_NORMAL, // 18 text8
+            new ComponentInfo(true, new int[]{18}), // 19 dd2
+            ComponentInfo.EMPTY_MARKUP, // 20 text9
+            new ComponentInfo(true, new int[]{20}), // 21 dt3
+            ComponentInfo.EMPTY_NORMAL, // 22 text10
+            new ComponentInfo(true, new int[]{22}), // 23 dd3
+            ComponentInfo.EMPTY_MARKUP, // 24 text11
+            new ComponentInfo(true, new int[]{24}), // 25 dt4
+            ComponentInfo.EMPTY_NORMAL, // 26 text12
+            new ComponentInfo(true, new int[]{26}), // 27 dd4
+            ComponentInfo.EMPTY_MARKUP, // 28 text13
+            new ComponentInfo(true, new int[]{28}), // 29 dt5
+            ComponentInfo.EMPTY_NORMAL, // 30 text14
+            new ComponentInfo(true, new int[]{30}), // 31 dd5
+            ComponentInfo.EMPTY_MARKUP, // 32 text15
+            new ComponentInfo(true, new int[]{32}), // 33 dt6
+            ComponentInfo.EMPTY_NORMAL, // 34 text16
+            new ComponentInfo(true, new int[]{34}), // 35 dd6
+            new ComponentInfo(true, new int[]{13, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33, 35}), // 36 dl
+            new ComponentInfo(true, new int[]{11, 36}), // 37 fieldset
+            new ComponentInfo(false, new int[]{6, 9, 37}), // 38 "layout"
+            new ComponentInfo(false, new int[]{38}), // 39 view
         };
         
         public NondominoPage() {
-            super(38, s_infos );
+            super(39, s_infos );
         }
         
         public int getComponentForId(String id) throws NoSuchComponentException { 
             if( "layout".equals(id) )
-                return 37;
+                return 38;
             if( "refresher".equals(id) )
                 return 6;
             if( "refresh".equals(id) )
@@ -99,9 +100,9 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator)
                 throws NoSuchComponentException { 
             switch (id) {
-            case 38:
+            case 39:
                 return createView(context, parent, evaluator);
-            case 37:
+            case 38:
                 return createLayout(context, parent, evaluator);
             case 6:
                 return createRefresher(context, parent, evaluator);
@@ -117,65 +118,67 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
                 return createP3(context, parent, evaluator);
             case 4:
                 return createText3(context, parent, evaluator);
+            case 9:
+                return createP4(context, parent, evaluator);
             case 8:
                 return createRefresh(context, parent, evaluator);
             case 7:
                 return createEventHandler(context, parent, evaluator);
-            case 36:
+            case 37:
                 return createFieldset(context, parent, evaluator);
-            case 10:
-                return createLegend(context, parent, evaluator);
-            case 9:
-                return createText4(context, parent, evaluator);
-            case 35:
-                return createDl(context, parent, evaluator);
-            case 12:
-                return createDt(context, parent, evaluator);
             case 11:
-                return createText5(context, parent, evaluator);
-            case 14:
-                return createDd(context, parent, evaluator);
+                return createLegend(context, parent, evaluator);
+            case 10:
+                return createText4(context, parent, evaluator);
+            case 36:
+                return createDl(context, parent, evaluator);
             case 13:
-                return createText6(context, parent, evaluator);
-            case 16:
-                return createDt2(context, parent, evaluator);
+                return createDt(context, parent, evaluator);
+            case 12:
+                return createText5(context, parent, evaluator);
             case 15:
-                return createText7(context, parent, evaluator);
-            case 18:
-                return createDd2(context, parent, evaluator);
+                return createDd(context, parent, evaluator);
+            case 14:
+                return createText6(context, parent, evaluator);
             case 17:
-                return createText8(context, parent, evaluator);
-            case 20:
-                return createDt3(context, parent, evaluator);
+                return createDt2(context, parent, evaluator);
+            case 16:
+                return createText7(context, parent, evaluator);
             case 19:
-                return createText9(context, parent, evaluator);
-            case 22:
-                return createDd3(context, parent, evaluator);
+                return createDd2(context, parent, evaluator);
+            case 18:
+                return createText8(context, parent, evaluator);
             case 21:
-                return createText10(context, parent, evaluator);
-            case 24:
-                return createDt4(context, parent, evaluator);
+                return createDt3(context, parent, evaluator);
+            case 20:
+                return createText9(context, parent, evaluator);
             case 23:
-                return createText11(context, parent, evaluator);
-            case 26:
-                return createDd4(context, parent, evaluator);
+                return createDd3(context, parent, evaluator);
+            case 22:
+                return createText10(context, parent, evaluator);
             case 25:
-                return createText12(context, parent, evaluator);
-            case 28:
-                return createDt5(context, parent, evaluator);
+                return createDt4(context, parent, evaluator);
+            case 24:
+                return createText11(context, parent, evaluator);
             case 27:
-                return createText13(context, parent, evaluator);
-            case 30:
-                return createDd5(context, parent, evaluator);
+                return createDd4(context, parent, evaluator);
+            case 26:
+                return createText12(context, parent, evaluator);
             case 29:
-                return createText14(context, parent, evaluator);
-            case 32:
-                return createDt6(context, parent, evaluator);
+                return createDt5(context, parent, evaluator);
+            case 28:
+                return createText13(context, parent, evaluator);
             case 31:
-                return createText15(context, parent, evaluator);
-            case 34:
-                return createDd6(context, parent, evaluator);
+                return createDd5(context, parent, evaluator);
+            case 30:
+                return createText14(context, parent, evaluator);
             case 33:
+                return createDt6(context, parent, evaluator);
+            case 32:
+                return createText15(context, parent, evaluator);
+            case 35:
+                return createDd6(context, parent, evaluator);
+            case 34:
                 return createText16(context, parent, evaluator);
             }
             throw new NoSuchComponentException(id);
@@ -272,6 +275,13 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
             ValueBinding value = evaluator.createValueBinding(result, valueExpr, sourceId,Object.class);
             result.setValueBinding("value", value);
             return result;
+        }
+
+        private UIComponent createP4(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            UIPassThroughTag component = new UIPassThroughTag();
+            component.setTag("p");
+            return component;
         }
 
         private UIComponent createRefresh(FacesContext context, 

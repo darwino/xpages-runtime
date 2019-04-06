@@ -22,6 +22,18 @@ html, body {
 	max-width: 48px;
 	max-height: 48px;
 }
+#footer ul {
+	padding-left: 0;
+}
+#footer li {
+	list-style: none;
+	margin-left: 0;
+	display: inline-block;
+	padding: 0.5em;
+}
+#footer li a {
+	text-decoration: underline;
+}
 
 .actions a {
 	display: inline-block;
@@ -34,4 +46,11 @@ html, body {
 
 .contact-form input[type='text'], .contact-form input[type='email'] {
 	width: 80%;
+}
+
+dt {
+	font-weight: bold;
+}
+dd {
+	margin-left: 2em;
 }

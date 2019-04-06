@@ -190,5 +190,52 @@
 			<version>${xpages-version}</version>
 			<classifier>xsp.theme.oneuiv302</classifier>
 		</dependency>
+		
+		<!-- ExtLib -->
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib.core</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib.controls</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 </project>
