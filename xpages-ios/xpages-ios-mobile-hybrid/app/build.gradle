@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -66,6 +67,8 @@ dependencies {
     implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
     implementation 'xerces:xercesImpl:2.11.0'
+
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
 //    implementation 'com.github.panga:java-beans-lite:1.0.2:patch'
 
     //compile "com.darwino:dwo-native-sqlite:${DARWINO_VERSION}"
