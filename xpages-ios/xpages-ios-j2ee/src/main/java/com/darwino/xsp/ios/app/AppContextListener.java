@@ -7,6 +7,8 @@ package com.darwino.xsp.ios.app;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 
+import org.openntf.xpages.runtime.osgi.OSGiPatcher;
+
 import com.darwino.commons.Platform;
 import com.darwino.commons.json.JsonException;
 import com.darwino.commons.tasks.TaskProgress;
@@ -35,6 +37,13 @@ public class AppContextListener extends AbstractDarwinoContextListener {
 	private EventBuilderFactory triggers;
 	
 	public AppContextListener() {
+	}
+	
+	@Override
+	public void contextInitialized(ServletContextEvent sce) {
+		super.contextInitialized(sce);
+		
+		OSGiPatcher.initKnownBundles();
 	}
 	
 	@Override

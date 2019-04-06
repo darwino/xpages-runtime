@@ -23,6 +23,7 @@ public class AppBasePlugin {
 		if(serviceClass==HttpServiceFactory.class) {
 			extensions.add(new AppRestServiceFactory());
 			extensions.add(new XPagesServiceFactory());
+			extensions.add(new GlobalResourceServiceFactory());
 		} else if(serviceClass==JsonMicroServiceFactory.class) {
 			extensions.add(new AppMicroServicesFactory());
 		}

@@ -16,19 +16,17 @@
 package org.openntf.xpages.runtime;
 
 import com.ibm.commons.vfs.VFS;
+import com.ibm.commons.vfs.VFSException;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.designer.runtime.server.ServletExecutionContext;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-import org.openntf.xpages.runtime.vfs.ApacheVFS;
+import org.openntf.xpages.runtime.vfs.ClasspathVFS;
 
 public class JakartaAppExecutionContext extends ServletExecutionContext {
 	private String appDirectory;
@@ -37,19 +35,9 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
     public JakartaAppExecutionContext(ServletContext servletContext) throws ApplicationException {
         super("Jakarta App", "jakartaApp", servletContext);
         
-        FileObject root;
 		try {
-			//root = org.apache.commons.vfs2.VFS.getManager().resolveFile(getClass().getResource("/"));
-			root = org.apache.commons.vfs2.VFS.getManager().resolveFile("res://.");
-			this.vfs = new ApacheVFS(root);
-			// Check to see if we're in a WAR root
-//			FileObject classes = root.resolveFile("WEB-INF/classes");
-//			if(classes.isFolder()) {
-//				this.vfs = new ApacheVFS(classes);
-//			} else {
-//				this.vfs = new ApacheVFS(root);
-//			}
-		} catch (FileSystemException e) {
+			this.vfs = new ClasspathVFS(this);
+		} catch (VFSException e) {
 			throw new ApplicationException(e);
 		}
     }

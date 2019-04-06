@@ -153,8 +153,9 @@ public class Nondomino extends AbstractCompiledPageDispatcher{
         private UIComponent createText2(FacesContext context, 
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             XspOutputText result = new XspOutputText();
+            result.setContentType("HTML");
             String sourceId = "refresher/p[1]/xp:text[1]/@value";
-            String valueExpr = "Random string: #{randomString.randomString}";
+            String valueExpr = "Random string: #{randomString.randomString}<br />Theme: #{javascript:context.getProperty('xsp.theme')}";
             ValueBinding value = evaluator.createValueBinding(result, valueExpr, sourceId,Object.class);
             result.setValueBinding("value", value);
             return result;

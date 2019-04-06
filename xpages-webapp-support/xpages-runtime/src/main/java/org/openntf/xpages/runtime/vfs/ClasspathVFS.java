@@ -4,53 +4,45 @@ import java.net.URL;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.apache.commons.vfs2.FileObject;
-import org.apache.commons.vfs2.FileSystemException;
-
 import com.ibm.commons.util.StringUtil;
 import com.ibm.commons.vfs.VFS;
 import com.ibm.commons.vfs.VFSException;
 import com.ibm.commons.vfs.VFSFile;
 import com.ibm.commons.vfs.VFSFilter.IFilter;
 import com.ibm.commons.vfs.VFSFolder;
+import com.ibm.designer.runtime.server.ServletExecutionContext;
+import com.ibm.designer.runtime.server.util.WarVFS;
 
 /**
- * Implementation of IBM Commons VFS using Apache Commons VFS, mixed with the local classpath
+ * Implementation of IBM Commons VFS using the current classloader's resource mechanism.
  * 
  * @author Jesse Gallagher
  * @since 1.0.0
  */
-public class ApacheVFS extends VFS {
-	private final FileObject root;
+public class ClasspathVFS extends VFS {
+	private static final boolean DEBUG = false;
+	
+	private final WarVFS delegate;
+	private final ServletExecutionContext context;
 	
 	/**
 	 * Pattern matcher for local XSP classes, assumed to be in the "xsp" package.
 	 */
 	private static final Pattern XSP_CLASS = Pattern.compile("^xsp/[^/\\.]+\\.class$");
 	
-	// TODO split into a true ApacheVFS + ClasspathVFS and provide combined view
-	public ApacheVFS(FileObject root) {
-		this.root = root;
+	public ClasspathVFS(ServletExecutionContext context) throws VFSException {
+		this.delegate = new WarVFS(context);
+		this.context = context;
 	}
 
 	@Override
 	protected FileEntry doCreateFileEntry(VFSFile file) {
-		try {
-			long mod = ((ApacheVFSFile)file).getFileObject().getContent().getLastModifiedTime();
-			return new ApacheFileEntry(this, file, mod);
-		} catch (FileSystemException e) {
-			throw new RuntimeException(e);
-		}
+		return null;
 	}
 
 	@Override
 	protected FolderEntry doCreateFolderEntry(VFSFolder folder) {
-		try {
-			long mod = ((ApacheVFSFolder)folder).getFileObject().getContent().getLastModifiedTime();
-			return new ApacheFolderEntry(this, folder, mod);
-		} catch (FileSystemException e) {
-			throw new RuntimeException(e);
-		}
+		return null;
 	}
 
 	@Override
@@ -59,18 +51,13 @@ public class ApacheVFS extends VFS {
 		if(isBadClassResource(localPath)) {
 			return new NopVFSFile(this, fileName);
 		}
-		URL uri = Thread.currentThread().getContextClassLoader().getResource(localPath);
+		URL uri = context.getContextClassLoader().getResource(localPath);
 		return new UrlVFSFile(this, fileName, uri);
 	}
 
 	@Override
 	protected VFSFolder doCreateVFSFolder(String folderName) {
-		try {
-			FileObject file = org.apache.commons.vfs2.VFS.getManager().resolveFile(folderName);
-			return new ApacheVFSFolder(this, folderName, file);
-		} catch (FileSystemException e) {
-			throw new RuntimeException(e);
-		}
+		return delegate.getFolder(folderName);
 	}
 
 	@Override
@@ -82,39 +69,12 @@ public class ApacheVFS extends VFS {
 	@Override
 	protected void doReadEntries(VFS vfs, String path, @SuppressWarnings("rawtypes") List result) {
 		// Can't assume
-//		try {
-//			FileObject folder = root.resolveFile(path);
-//			if(folder.isFolder()) {
-//				for(FileObject child : folder.getChildren()) {
-//					if(child.isFolder()) {
-//						result.add(doCreateFolderEntry(doCreateVFSFolder(child.getName().toString())));
-//					} else if(child.isFile()) {
-//						result.add(doCreateFileEntry(doCreateVFSFile(child.getName().toString())));
-//					}
-//				}
-//			}
-//		} catch (FileSystemException e) {
-//			throw new RuntimeException(e);
-//		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void doReadResources(String path, @SuppressWarnings("rawtypes") List result, IFilter filter) {
-//		try {
-//			FileObject folder = root.resolveFile(path);
-//			if(folder.isFolder()) {
-//				for(FileObject child : folder.getChildren()) {
-//					if(child.isFolder()) {
-//						result.add(doCreateVFSFolder(child.getName().toString()));
-//					} else if(child.isFile()) {
-//						result.add(doCreateVFSFile(child.getName().toString()));
-//					}
-//				}
-//			}
-//		} catch (FileSystemException e) {
-//			throw new RuntimeException(e);
-//		}
+		// Can't assume
 	}
 	
 	@Override
@@ -123,6 +83,9 @@ public class ApacheVFS extends VFS {
 	}
 	@Override
 	protected Entry findEntry(String path) {
+		if(DEBUG) {
+			System.out.println("findEntry " + path);
+		}
 		String localPath = localResolve(path);
 		if(isBadClassResource(path)) {
 			return null;
@@ -131,20 +94,33 @@ public class ApacheVFS extends VFS {
 	}
 	@Override
 	protected FileEntry findFileEntry(String path) {
-		String localPath = localResolve(path);
-		if(isBadClassResource(path)) {
-			return null;
+		if(DEBUG) {
+			System.out.println("findFileEntry " + path);
 		}
-		return super.findFileEntry(localPath);
+		String localPath = localResolve(path);
+		URL uri = null;
+		if(!isBadClassResource(path)) {
+			uri = context.getContextClassLoader().getResource(localPath);
+		}
+		if(uri != null) {
+			return super.findFileEntry(path);
+		} else {
+			try {
+				return new DelegateFileEntry(this, delegate.getFile(path));
+			} catch (VFSException e) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 	@Override
 	protected FolderEntry findFolderEntry(String path) {
-		// Special support for expected in-app resources
-		URL uri = Thread.currentThread().getContextClassLoader().getResource(localResolve(path));
+		if(DEBUG) {
+			System.out.println("findFolderEntry " + path);
+		}
+		VFSFolder folder = delegate.getFolder(path);
 		try {
-			FileObject file = org.apache.commons.vfs2.VFS.getManager().resolveFile(uri);
-			return doCreateFolderEntry(new ApacheVFSFolder(this, path, file));
-		} catch (FileSystemException e) {
+			return new DelegateFolderEntry(this, folder);
+		} catch (VFSException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -156,11 +132,7 @@ public class ApacheVFS extends VFS {
 	
 	@Override
 	protected void doClose() {
-		try {
-			this.root.close();
-		} catch (FileSystemException e) {
-			e.printStackTrace();
-		}
+		// NOP
 	}
 	
 	// *******************************************************************************
@@ -188,16 +160,15 @@ public class ApacheVFS extends VFS {
 	// * Implementation support classes
 	// *******************************************************************************
 	
-	private static class ApacheFileEntry extends FileEntry {
-		public ApacheFileEntry(VFS vfs, VFSFile file, long modificationDate) {
-			super(vfs, file, modificationDate);
+	private static class DelegateFileEntry extends FileEntry {
+		public DelegateFileEntry(VFS vfs, VFSFile file) throws VFSException {
+			super(vfs, file, file.getLastModificationDate());
 		}
 	}
 	
-	private static class ApacheFolderEntry extends FolderEntry {
-
-		public ApacheFolderEntry(VFS vfs, VFSFolder folder, long modificationDate) {
-			super(vfs, folder, modificationDate);
+	private static class DelegateFolderEntry extends FolderEntry {
+		public DelegateFolderEntry(VFS vfs, VFSFolder folder) throws VFSException {
+			super(vfs, folder, folder.getLastModificationDate());
 		}
 		
 	}
