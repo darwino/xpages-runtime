@@ -1,5 +1,7 @@
 package org.openntf.xpages.runtime.context;
 
+import java.io.InputStream;
+
 import javax.faces.context.ExternalContext;
 
 import org.openntf.xpages.runtime.platform.JakartaPlatform;
@@ -21,6 +23,20 @@ public class JakartaExternalContext extends ExternalContextEx {
 		} else {
 			return result;
 		}
+	}
+	
+	@Override
+	public InputStream getResourceAsStream(String res) {
+		InputStream is = super.getResourceAsStream(res);
+		// Mobile app compatibility
+		if(is == null && res != null && res.startsWith("/WEB-INF/")) {
+			is = super.getResourceAsStream("/DARWINO-INF/" + res.substring("/WEB-INF/".length()));
+			
+			if(is == null) {
+				is = super.getResourceAsStream(res.substring("/WEB-INF/".length()));
+			}
+		}
+		return is;
 	}
 
 }
