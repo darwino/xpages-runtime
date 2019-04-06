@@ -6,7 +6,6 @@ package com.darwino.xsp.ios.app;
 
 import java.util.List;
 
-import com.darwino.commons.microservices.JsonMicroServiceFactory;
 import com.darwino.commons.services.HttpServiceFactory;
 
 
@@ -21,10 +20,7 @@ public class AppBasePlugin {
 	
 	public static void findExtensions(Class<?> serviceClass, List<Object> extensions) {
 		if(serviceClass==HttpServiceFactory.class) {
-			extensions.add(new AppRestServiceFactory());
 			extensions.add(new XPagesServiceFactory());
-		} else if(serviceClass==JsonMicroServiceFactory.class) {
-			extensions.add(new AppMicroServicesFactory());
 		}
 	}
 }
