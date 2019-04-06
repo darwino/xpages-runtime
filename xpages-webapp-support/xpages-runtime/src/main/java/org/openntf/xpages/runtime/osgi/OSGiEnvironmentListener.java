@@ -26,12 +26,9 @@ import javax.servlet.annotation.WebListener;
 public class OSGiEnvironmentListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		AccessController.doPrivileged(new PrivilegedAction<Void>() {
-			@Override
-			public Void run() {
-				OSGiPatcher.initKnownBundles();
-				return null;
-			}
+		AccessController.doPrivileged((PrivilegedAction<Void>) () -> {
+			OSGiPatcher.initKnownBundles();
+			return null;
 		});
 	}
 }
