@@ -1,0 +1,5 @@
+com.ibm.xsp.extlib.util.debug.JavaScriptDumpFactory
+com.ibm.xsp.extlib.util.debug.BasicDumpFactory
+com.ibm.xsp.extlib.util.debug.XPagesDumpFactory
+com.ibm.xsp.extlib.util.debug.ExtLibDumpFactory
+com.ibm.xsp.extlib.social.impl.SocialDumpFactory
