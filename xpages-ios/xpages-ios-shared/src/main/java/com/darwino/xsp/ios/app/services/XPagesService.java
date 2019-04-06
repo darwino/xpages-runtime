@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openntf.xpages.runtime.listener.JakartaConfigureCoreListener;
-import org.openntf.xpages.runtime.platform.JakartaPlatform;
 
 import com.darwino.commons.services.HttpService;
 import com.darwino.commons.services.HttpServiceContext;
