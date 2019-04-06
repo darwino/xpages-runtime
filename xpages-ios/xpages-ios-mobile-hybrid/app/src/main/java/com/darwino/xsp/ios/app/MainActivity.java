@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.darwino.android.platform.hybrid.DarwinoHybridActivity;
 
+import org.openntf.xpages.runtime.osgi.OSGiPatcher;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 public class MainActivity extends DarwinoHybridActivity {
@@ -20,6 +21,8 @@ public class MainActivity extends DarwinoHybridActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		OSGiPatcher.initKnownBundles();
         loadMainPage();
 	}
 }
