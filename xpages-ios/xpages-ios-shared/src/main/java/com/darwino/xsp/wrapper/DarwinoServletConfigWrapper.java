@@ -18,7 +18,7 @@ public class DarwinoServletConfigWrapper implements ServletConfig {
 		return servletContext.getInitParameter(param);
 	}
 
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Enumeration getInitParameterNames() {
 		return servletContext.getInitParameterNames();
