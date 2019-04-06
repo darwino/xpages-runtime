@@ -18,6 +18,7 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import com.darwino.commons.services.HttpService;
 import com.darwino.commons.services.HttpServiceContext;
 import com.darwino.j2ee.servlet.server.http.ServletServiceContext;
+import com.darwino.xsp.platform.DarwinoPlatform;
 import com.darwino.xsp.util.XSPUtil;
 import com.darwino.xsp.wrapper.DarwinoServletConfigWrapper;
 import com.darwino.xsp.wrapper.DarwinoServletContextWrapper;
@@ -87,7 +88,7 @@ public class XPagesService extends HttpService {
 			this.delegate = new DesignerFacesServlet();
 			this.globalResources = new DesignerGlobalResourceServlet();
 			
-			JakartaPlatform.initContext(context);
+			DarwinoPlatform.initContext(context);
 			try {
 				delegate.init(conf);
 				globalResources.init(conf);
