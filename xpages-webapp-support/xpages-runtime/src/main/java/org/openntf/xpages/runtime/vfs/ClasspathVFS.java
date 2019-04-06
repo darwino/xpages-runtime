@@ -65,13 +65,11 @@ public class ClasspathVFS extends VFS {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doReadEntries(VFS vfs, String path, @SuppressWarnings("rawtypes") List result) {
 		// Can't assume
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void doReadResources(String path, @SuppressWarnings("rawtypes") List result, IFilter filter) {
 		// Can't assume
