@@ -18,12 +18,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.openntf.xpages.runtime.listener.JakartaConfigureCoreListener;
+import org.openntf.xpages.runtime.util.XSPUtil;
 
 import com.darwino.commons.services.HttpService;
 import com.darwino.commons.services.HttpServiceContext;
 import com.darwino.j2ee.servlet.server.http.ServletServiceContext;
 import com.darwino.xsp.platform.DarwinoPlatform;
-import com.darwino.xsp.util.XSPUtil;
 import com.darwino.xsp.wrapper.DarwinoServletConfigWrapper;
 import com.darwino.xsp.wrapper.DarwinoServletContextWrapper;
 import com.darwino.xsp.wrapper.DarwinoServletRequestWrapper;
@@ -154,6 +154,7 @@ public class XPagesService extends HttpService {
 					}
 					res.setContentType(contentType);
 					res.setContentLength((int)Files.size(file));
+					res.setStatus(HttpServletResponse.SC_OK);
 					
 					try(InputStream is = Files.newInputStream(file)) {
 						OutputStream os = res.getOutputStream();

@@ -22,6 +22,7 @@ import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
+import org.openntf.xpages.runtime.util.XSPUtil;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
@@ -40,7 +41,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public URL getResource(String s) {
-        return context.getClass().getResource(s);
+		return XSPUtil.getResource(context.getClass().getClassLoader(), s);
     }
 
     @Override
@@ -55,12 +56,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public Enumeration<URL> getResources(String s) throws IOException {
-		Enumeration<URL> result = context.getClass().getClassLoader().getResources(s);
-		if((result == null || !result.hasMoreElements()) && s != null && s.startsWith("/")) {
-			result = Thread.currentThread().getContextClassLoader().getResources(s.substring(1));
-		}
-		
-		return result;
+		return XSPUtil.getResources(context.getClass().getClassLoader(), s);
     }
 
     @Override

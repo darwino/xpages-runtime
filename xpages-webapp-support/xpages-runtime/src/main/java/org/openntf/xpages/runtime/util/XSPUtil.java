@@ -1,9 +1,11 @@
-package com.darwino.xsp.util;
+package org.openntf.xpages.runtime.util;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
+
+import com.ibm.commons.util.StringUtil;
 
 public enum XSPUtil {
 	;
@@ -25,11 +27,18 @@ public enum XSPUtil {
 		return result;
 	}
 	
-	public static Enumeration<URL> getResources(ClassLoader cl, String path) throws IOException {
+	public static Enumeration<URL> getResources(ClassLoader cl, String p) throws IOException {
+		String path = StringUtil.toString(p);
+		
 		Enumeration<URL> result = cl.getResources(path);
 		if((result == null || !result.hasMoreElements()) && path != null && path.startsWith("/")) {
 			result = cl.getResources(path.substring(1));
 		}
+		
+		if((result == null || !result.hasMoreElements()) && path != null && path.startsWith("/")) {
+			result = Thread.currentThread().getContextClassLoader().getResources(path.substring(1));
+		}
+		
 		return result;
 	}
 }
