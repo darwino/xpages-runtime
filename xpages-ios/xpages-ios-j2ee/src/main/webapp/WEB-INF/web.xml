@@ -76,14 +76,14 @@
 	<!--  Filter for Gzip -->
 	<!--  Note that a GZIP filter should not be applied twice in case of FORWARD -->
 	<!--  This filter should then be added first -->
-	<filter>
+<!-- 	<filter>
     	<filter-name>GZipFilter</filter-name>
     	<filter-class>com.darwino.j2ee.servlet.gzip.GZipServletFilter</filter-class>
 	</filter>
 	<filter-mapping>
     	<filter-name>GZipFilter</filter-name>
     	<url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping> -->
 
 	<!-- Filter for $darwino-xxx URLs rewritting -->
 	<!--  This filter must be before the services or resources filters, to make sure that the URL is processed before reaching them -->
