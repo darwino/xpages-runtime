@@ -17,7 +17,7 @@
 				<artifactId>gradle-maven-plugin</artifactId>
 				<version>1.0.8</version>
 				<configuration>
-					<gradleVersion>4.1</gradleVersion>
+					<gradleVersion>4.6</gradleVersion>
 					<tasks>
 						<!-- this is the debug APK for now -->
 						<task>assembleDebug</task>
