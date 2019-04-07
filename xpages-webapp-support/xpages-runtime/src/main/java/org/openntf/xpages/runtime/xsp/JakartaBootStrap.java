@@ -15,10 +15,13 @@
  */
 package org.openntf.xpages.runtime.xsp;
 
+import com.ibm.commons.extension.ExtensionManager;
 import com.ibm.xsp.FacesExceptionEx;
 import com.ibm.xsp.application.ApplicationFactoryEx;
 import com.ibm.xsp.config.BootStrap;
 import com.ibm.xsp.config.ServletContextWrapper;
+import com.ibm.xsp.extlib.library.ExtlibLibrary;
+import com.ibm.xsp.library.XspLibrary;
 import com.ibm.xsp.util.Delegation;
 
 import javax.faces.FacesException;
@@ -30,7 +33,9 @@ import javax.servlet.ServletContextListener;
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapperWrapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JakartaBootStrap extends BootStrap {
     private ServletContextListener contextListener;
@@ -91,15 +96,48 @@ public class JakartaBootStrap extends BootStrap {
 
     @Override
     protected List<String> readConfigFiles() {
-    	List<String> result = new ArrayList<String>();
-    	for(String f : super.readConfigFiles()) {
-    		if(!f.startsWith("/")) {
-    			result.add("/" + f);
-    		} else {
-    			result.add(f);
-    		}
-    	}
+    	List<String> result = super.readConfigFiles().stream()
+    		.map(f -> {
+    			if(!f.startsWith("/")) {
+        			return "/" + f;
+        		} else {
+        			return f;
+        		}
+    		})
+    		.collect(Collectors.toCollection(ArrayList::new));
     	result.add("/META-INF/jakarta-faces-config.xml");
+    	
+    	
+    	
+    	return result;
+    }
+    
+    @Override
+    protected List<String> readExtraFiles(ServletContext servletContext) {
+    	List<String> result = super.readExtraFiles(servletContext).stream()
+    		.map(f -> {
+    			if(!f.startsWith("/")) {
+        			return "/" + f;
+        		} else {
+        			return f;
+        		}
+    		})
+    		.collect(Collectors.toCollection(ArrayList::new));
+    	
+    	// Preload files from the ExtLib library as a workaround to https://github.com/darwino/xpages-runtime/issues/19
+    	ExtlibLibrary lib = new ExtlibLibrary();
+		String[] files = lib.getFacesConfigFiles();
+		if(files != null) {
+			Arrays.stream(files)
+    			.map(f -> {
+        			if(!f.startsWith("/")) {
+            			return "/" + f;
+            		} else {
+            			return f;
+            		}
+        		})
+    			.forEach(result::add);
+		}
     	return result;
     }
 }
