@@ -20,10 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.X509Certificate;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -33,12 +30,13 @@ import org.osgi.framework.ServiceReference;
 import com.ibm.commons.util.PathUtil;
 
 public class MockBundle implements Bundle {
-	
-	private final Object context;
-	
-	public MockBundle(Object context) {
-		this.context = context;
-	}
+
+    private final Object context;
+    private BundleContext bundleContext;
+
+    public MockBundle(Object context) {
+        this.context = context;
+    }
 
     @Override
     public URL getResource(String s) {
@@ -50,7 +48,56 @@ public class MockBundle implements Bundle {
         return getResource(s);
     }
 
-	@Override
+    @Override
+    public Class<?> loadClass(String s) throws ClassNotFoundException {
+        return Thread.currentThread().getContextClassLoader().loadClass(s);
+    }
+
+    @Override
+    public Enumeration<URL> getResources(String s) throws IOException {
+		Enumeration<URL> result = context.getClass().getClassLoader().getResources(s);
+		if((result == null || !result.hasMoreElements()) && s != null && s.startsWith("/")) {
+			result = Thread.currentThread().getContextClassLoader().getResources(s.substring(1));
+		}
+		
+		return result;
+    }
+
+    @Override
+    public Enumeration<String> getEntryPaths(String s) {
+        return null;
+    }
+
+    @Override
+    public Enumeration<URL> findEntries(String s, String s1, boolean b) {
+    	try {
+	    	// Not a perfect version, but it'll do
+	    	String path = PathUtil.concat(s, s1, '/');
+			return getResources(path);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+
+    @Override
+    public BundleContext getBundleContext() {
+        return bundleContext;
+    }
+    
+    public void setBundleContext(BundleContext bundleContext) {
+		this.bundleContext = bundleContext;
+	}
+    
+    // *******************************************************************************
+	// * Stubbed methods
+	// *******************************************************************************
+
+    @Override
+    public long getLastModified() {
+        return 0;
+    }
+
+    @Override
     public int getState() {
         return 0;
     }
@@ -92,7 +139,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public Dictionary<String, String> getHeaders() {
-        return null;
+        return new Hashtable<>();
     }
 
     @Override
@@ -122,51 +169,11 @@ public class MockBundle implements Bundle {
 
     @Override
     public Dictionary<String, String> getHeaders(String s) {
-        return null;
+        return new Hashtable<>();
     }
 
     @Override
     public String getSymbolicName() {
-        return null;
-    }
-
-    @Override
-    public Class<?> loadClass(String s) throws ClassNotFoundException {
-        return null;
-    }
-
-    @Override
-    public Enumeration<URL> getResources(String s) throws IOException {
-        return null;
-    }
-
-    @Override
-    public Enumeration<String> getEntryPaths(String s) {
-        return null;
-    }
-
-    @Override
-    public long getLastModified() {
-        return 0;
-    }
-
-    @Override
-    public Enumeration<URL> findEntries(String s, String s1, boolean b) {
-    	// Not a perfect version, but it'll do
-        try {
-        	String path = PathUtil.concat(s, s1, '/');
-			Enumeration<URL> result = context.getClass().getClassLoader().getResources(path);
-			if((result == null || !result.hasMoreElements()) && path.startsWith("/")) {
-				result = Thread.currentThread().getContextClassLoader().getResources(path.substring(1));
-			}
-			return result;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-    }
-
-    @Override
-    public BundleContext getBundleContext() {
         return null;
     }
 

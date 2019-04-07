@@ -149,6 +149,57 @@
 	
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>copy-problematic-dojo-files</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>com.ibm.xsp</groupId>
+									<artifactId>com.ibm.xsp.dojo</artifactId>
+									<version>10.0.1.20181128-2143</version>
+									<classifier>xsp.dojo</classifier>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${project.build.directory}/dojo</outputDirectory>
+							<includes>
+								**/_*,**/_*/**
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.1</version>
+				<configuration>
+					<descriptors>
+						<descriptor>src/main/assembly/dojo.xml</descriptor>
+					</descriptors>
+					<finalName>dojo-underscores</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
+					<outputDirectory>${project.build.directory}/classes</outputDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

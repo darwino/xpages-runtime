@@ -46,6 +46,7 @@ public class OSGiPatcher {
 							instance.set(null, inst);
 							MockBundle mockBundle = new MockBundle(inst);
 							MockBundleContext bundleContext = new MockBundleContext(mockBundle);
+							mockBundle.setBundleContext(bundleContext);
 							inst.start(bundleContext);
 						}
 					}

@@ -1,9 +1,14 @@
 package com.darwino.xsp.ios.app.services;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -32,15 +37,17 @@ public class XPagesService extends HttpService {
 	private JakartaConfigureCoreListener listener = new JakartaConfigureCoreListener();
 	private boolean initialized;
 	private DesignerGlobalResourceServlet globalResources;
+	
+	private Path dojoRoot;
 
 	@Override
 	public void service(HttpServiceContext serviceContext) {
-		init(serviceContext);
-		
-		HttpServletRequest req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest());
-		HttpServletResponse res = ((ServletServiceContext)serviceContext).getHttpResponse();
-		
 		try {
+			init(serviceContext);
+			
+			HttpServletRequest req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest());
+			HttpServletResponse res = ((ServletServiceContext)serviceContext).getHttpResponse();
+			
 			String pathInfo = StringUtil.toString(req.getPathInfo());
 			if(!pathInfo.startsWith("/xsp/")) {
 				delegate.service(req, res);
@@ -48,7 +55,11 @@ public class XPagesService extends HttpService {
 				// globalResources expects pathInfo to be e.g. "/dojoroot/dojo/dojo.js", not "/xsp/.ibmxspres/dojoroot/dojo/dojo.js"
 				String prefix = "/.xsp/xsp/.ibmxspres";
 				req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest(), prefix);
-				globalResources.service(req, res);
+				
+				// TODO patch around the method the Dojo resource loader uses to get the resource input stream instead of overriding here
+				if(!maybeWorkaroundAndroid(req, res)) {
+					globalResources.service(req, res);
+				}
 			} else {
 				// TODO replace with a real resources servlet if possible
 				// Service from a local file
@@ -77,7 +88,7 @@ public class XPagesService extends HttpService {
 		}
 	}
 
-	private synchronized void init(HttpServiceContext serviceContext) {
+	private synchronized void init(HttpServiceContext serviceContext) throws IOException {
 		if(!this.initialized) {
 			ServletContext context = new DarwinoServletContextWrapper(((ServletServiceContext)serviceContext).getServletContext());
 			ServletConfig conf = new DarwinoServletConfigWrapper(context);
@@ -95,8 +106,62 @@ public class XPagesService extends HttpService {
 				throw new RuntimeException(e);
 			}
 			
+			// Expand the embedded Dojo resources
+			// TODO move this to Android-only
+			this.dojoRoot = Files.createTempDirectory("dojo-underscores");
+			InputStream is = getClass().getResourceAsStream("/dojo-underscores.zip");
+			if(is == null) {
+				is = getClass().getResourceAsStream("/dojo-underscores.zip");
+			}
+			try {
+				try(ZipInputStream zis = new ZipInputStream(is)) {
+					ZipEntry entry = zis.getNextEntry();
+					while(entry != null) {
+						if(!entry.isDirectory()) {
+							Path dest = this.dojoRoot.resolve(entry.getName().replace('/', File.separatorChar));
+							Files.createDirectories(dest.getParent());
+							try(OutputStream os = Files.newOutputStream(dest)) {
+								StreamUtil.copyStream(zis, os);
+							}
+						}
+						
+						entry = zis.getNextEntry();
+					}
+				}
+			} finally {
+				is.close();
+			}
 			
 			this.initialized = true;
 		}
+	}
+	
+	private boolean maybeWorkaroundAndroid(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		if(this.dojoRoot != null) {
+			String p = StringUtil.toString(req.getPathInfo());
+			if(p.startsWith("/dojoroot/") && p.contains("_")) {
+				String subPath = p.substring("/dojoroot/".length());
+				Path file = this.dojoRoot.resolve("resources").resolve("dojo-version").resolve(subPath.replace('/', File.separatorChar));
+				if(Files.exists(file)) {
+					String contentType = Files.probeContentType(file);
+					if(StringUtil.isEmpty(contentType) || "application/octet-stream".equals(contentType)) {
+						contentType = URLConnection.guessContentTypeFromName(file.getFileName().toString());
+					}
+					if(StringUtil.isEmpty(contentType)) {
+						contentType = "application/octet-stream";
+					}
+					res.setContentType(contentType);
+					res.setContentLength((int)Files.size(file));
+					
+					try(InputStream is = Files.newInputStream(file)) {
+						OutputStream os = res.getOutputStream();
+						StreamUtil.copyStream(is, os);
+					}
+					
+					return true;	
+				}
+			}
+		}
+		return false;
 	}
 }
