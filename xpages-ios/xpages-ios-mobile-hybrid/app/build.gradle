@@ -71,7 +71,10 @@ dependencies {
     implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
+
+    // Fill in gaps in the Android JRE
     implementation 'xerces:xercesImpl:2.11.0'
+    implementation 'org.glassfish.corba:glassfish-corba-omgapi:4.2.0'
 
     //compile "com.darwino:dwo-native-sqlite:${DARWINO_VERSION}"
     nativeDeps (
