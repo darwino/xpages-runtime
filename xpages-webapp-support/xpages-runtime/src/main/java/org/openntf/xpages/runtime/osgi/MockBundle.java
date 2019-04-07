@@ -154,7 +154,12 @@ public class MockBundle implements Bundle {
     public Enumeration<URL> findEntries(String s, String s1, boolean b) {
     	// Not a perfect version, but it'll do
         try {
-			return context.getClass().getClassLoader().getResources(PathUtil.concat(s, s1, '/'));
+        	String path = PathUtil.concat(s, s1, '/');
+			Enumeration<URL> result = context.getClass().getClassLoader().getResources(path);
+			if((result == null || !result.hasMoreElements()) && path.startsWith("/")) {
+				result = Thread.currentThread().getContextClassLoader().getResources(path.substring(1));
+			}
+			return result;
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
