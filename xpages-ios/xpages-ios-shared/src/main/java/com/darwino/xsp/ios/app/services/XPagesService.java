@@ -111,25 +111,27 @@ public class XPagesService extends HttpService {
 			this.dojoRoot = Files.createTempDirectory("dojo-underscores");
 			InputStream is = getClass().getResourceAsStream("/dojo-underscores.zip");
 			if(is == null) {
-				is = getClass().getResourceAsStream("/dojo-underscores.zip");
+				is = getClass().getResourceAsStream("dojo-underscores.zip");
 			}
-			try {
-				try(ZipInputStream zis = new ZipInputStream(is)) {
-					ZipEntry entry = zis.getNextEntry();
-					while(entry != null) {
-						if(!entry.isDirectory()) {
-							Path dest = this.dojoRoot.resolve(entry.getName().replace('/', File.separatorChar));
-							Files.createDirectories(dest.getParent());
-							try(OutputStream os = Files.newOutputStream(dest)) {
-								StreamUtil.copyStream(zis, os);
+			if(is != null) {
+				try {
+					try(ZipInputStream zis = new ZipInputStream(is)) {
+						ZipEntry entry = zis.getNextEntry();
+						while(entry != null) {
+							if(!entry.isDirectory()) {
+								Path dest = this.dojoRoot.resolve(entry.getName().replace('/', File.separatorChar));
+								Files.createDirectories(dest.getParent());
+								try(OutputStream os = Files.newOutputStream(dest)) {
+									StreamUtil.copyStream(zis, os);
+								}
 							}
+							
+							entry = zis.getNextEntry();
 						}
-						
-						entry = zis.getNextEntry();
 					}
+				} finally {
+					is.close();
 				}
-			} finally {
-				is.close();
 			}
 			
 			this.initialized = true;
