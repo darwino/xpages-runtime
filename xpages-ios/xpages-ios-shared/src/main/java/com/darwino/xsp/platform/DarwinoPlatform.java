@@ -17,7 +17,7 @@ import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import com.darwino.commons.util.io.StreamUtil;
 import com.ibm.commons.platform.WebAppServerPlatform;
 import com.ibm.commons.util.StringUtil;
-import com.ibm.designer.runtime.Application.IApplicationFinder;
+import com.ibm.designer.runtime.Application;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.xsp.context.DojoLibraryFactory;
 
@@ -53,8 +53,10 @@ public class DarwinoPlatform extends WebAppServerPlatform {
 			File zipOut = File.createTempFile("xpages", "");
 			zipOut.delete();
 			zipOut.mkdirs();
-			try(InputStream is = getClass().getResourceAsStream("/xpages.zip")) {
-				try(ZipInputStream zis = new ZipInputStream(is)) {
+			InputStream is = getClass().getResourceAsStream("/xpages.zip");
+			try {
+				ZipInputStream zis = new ZipInputStream(is);
+				try {
 					ZipEntry entry = zis.getNextEntry();
 					while(entry != null) {
 						if(entry.isDirectory()) {
@@ -72,7 +74,11 @@ public class DarwinoPlatform extends WebAppServerPlatform {
 						
 						entry = zis.getNextEntry();
 					}
+				} finally {
+					StreamUtil.close(zis);
 				}
+			} finally {
+				StreamUtil.close(is);
 			}
 
 			userDataDirectory = zipOut;
@@ -89,12 +95,15 @@ public class DarwinoPlatform extends WebAppServerPlatform {
 	@Override
 	public Object getObject(String s) {
 		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) {
-			return (IApplicationFinder) () -> {
-				try {
-					JakartaAppExecutionContext ctx = new JakartaAppExecutionContext(servletContext);
-					return new JakartaApplication(ctx);
-				} catch (ApplicationException e) {
-					throw new RuntimeException(e);
+			return new Application.IApplicationFinder() {
+				@Override
+				public Application get() {
+					try {
+						JakartaAppExecutionContext ctx = new JakartaAppExecutionContext(servletContext);
+						return new JakartaApplication(ctx);
+					} catch (ApplicationException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			};
 		} else {
