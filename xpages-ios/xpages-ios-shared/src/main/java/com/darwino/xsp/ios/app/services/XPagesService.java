@@ -124,6 +124,7 @@ public class XPagesService extends HttpService {
 							if(!entry.isDirectory()) {
 								File dest = new File(this.dojoRoot, entry.getName().replace('/', File.separatorChar));
 								dest.getParentFile().mkdirs();
+								dest.deleteOnExit();
 								OutputStream os = new FileOutputStream(dest);
 								try {
 									StreamUtil.copyStream(zis, os);
