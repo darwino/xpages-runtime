@@ -37,7 +37,7 @@ moe {
         // mainScheme 'ios'
         // testScheme 'ios-Test'
     }
-    proguardLevel 'all'
+    //proguardLevel 'all'
 }
 
 configurations {
@@ -60,6 +60,8 @@ dependencies {
     implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
+
+    implementation 'org.glassfish.corba:glassfish-corba-omgapi:4.2.0'
 
     nativeDeps (
         [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'a', classifier: 'ios-universal' ]
