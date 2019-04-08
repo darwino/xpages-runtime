@@ -1,12 +1,12 @@
 package com.darwino.xsp.ios.app.services;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLConnection;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -38,7 +38,7 @@ public class XPagesService extends HttpService {
 	private boolean initialized;
 	private DesignerGlobalResourceServlet globalResources;
 	
-	private Path dojoRoot;
+	private File dojoRoot;
 
 	@Override
 	public void service(HttpServiceContext serviceContext) {
@@ -108,26 +108,34 @@ public class XPagesService extends HttpService {
 			
 			// Expand the embedded Dojo resources
 			// TODO move this to Android-only
-			this.dojoRoot = Files.createTempDirectory("dojo-underscores");
+			this.dojoRoot = File.createTempFile("dojo-underscores", "zip");
+			this.dojoRoot.delete();
+			this.dojoRoot.mkdirs();
 			InputStream is = getClass().getResourceAsStream("/dojo-underscores.zip");
 			if(is == null) {
 				is = getClass().getResourceAsStream("dojo-underscores.zip");
 			}
 			if(is != null) {
 				try {
-					try(ZipInputStream zis = new ZipInputStream(is)) {
+					ZipInputStream zis = new ZipInputStream(is);
+					try {
 						ZipEntry entry = zis.getNextEntry();
 						while(entry != null) {
 							if(!entry.isDirectory()) {
-								Path dest = this.dojoRoot.resolve(entry.getName().replace('/', File.separatorChar));
-								Files.createDirectories(dest.getParent());
-								try(OutputStream os = Files.newOutputStream(dest)) {
+								File dest = new File(this.dojoRoot, entry.getName().replace('/', File.separatorChar));
+								dest.getParentFile().mkdirs();
+								OutputStream os = new FileOutputStream(dest);
+								try {
 									StreamUtil.copyStream(zis, os);
+								} finally {
+									os.close();
 								}
 							}
 							
 							entry = zis.getNextEntry();
 						}
+					} finally {
+						zis.close();
 					}
 				} finally {
 					is.close();
@@ -143,22 +151,22 @@ public class XPagesService extends HttpService {
 			String p = StringUtil.toString(req.getPathInfo());
 			if(p.startsWith("/dojoroot/") && p.contains("_")) {
 				String subPath = p.substring("/dojoroot/".length());
-				Path file = this.dojoRoot.resolve("resources").resolve("dojo-version").resolve(subPath.replace('/', File.separatorChar));
-				if(Files.exists(file)) {
-					String contentType = Files.probeContentType(file);
-					if(StringUtil.isEmpty(contentType) || "application/octet-stream".equals(contentType)) {
-						contentType = URLConnection.guessContentTypeFromName(file.getFileName().toString());
-					}
+				File file = new File(this.dojoRoot, "resources" + File.separatorChar + "dojo-version" + File.separatorChar + subPath.replace('/', File.separatorChar));
+				if(file.exists()) {
+					String contentType = URLConnection.guessContentTypeFromName(file.getName());
 					if(StringUtil.isEmpty(contentType)) {
 						contentType = "application/octet-stream";
 					}
 					res.setContentType(contentType);
-					res.setContentLength((int)Files.size(file));
+					res.setContentLength((int)file.length());
 					res.setStatus(HttpServletResponse.SC_OK);
 					
-					try(InputStream is = Files.newInputStream(file)) {
+					InputStream is = new FileInputStream(file);
+					try {
 						OutputStream os = res.getOutputStream();
 						StreamUtil.copyStream(is, os);
+					} finally {
+						is.close();
 					}
 					
 					return true;	

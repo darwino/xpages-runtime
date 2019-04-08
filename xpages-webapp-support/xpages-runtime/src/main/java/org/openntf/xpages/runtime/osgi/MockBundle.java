@@ -135,7 +135,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public Dictionary<String, String> getHeaders() {
-        return new Hashtable<>();
+        return new Hashtable<String, String>();
     }
 
     @Override
@@ -165,7 +165,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public Dictionary<String, String> getHeaders(String s) {
-        return new Hashtable<>();
+        return new Hashtable<String, String>();
     }
 
     @Override
