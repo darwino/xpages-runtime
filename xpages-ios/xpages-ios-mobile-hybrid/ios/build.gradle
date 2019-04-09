@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         // Multi-OS Engine plugin
-        classpath group: 'org.multi-os-engine', name: 'moe-gradle', version: '1.3.+'
+        classpath group: 'org.multi-os-engine', name: 'moe-gradle', version: '1.4.+'
     }
 }
 
@@ -39,6 +39,25 @@ moe {
     }
     //proguardLevel 'all'
 }
+moeMainProGuard {
+    doLast {
+        def jar = getOutJar()
+        def outputDir = file(jar.getAbsolutePath() + "_")
+        copy{
+            from(zipTree(jar)){
+                exclude "META-INF/*.SF"
+                exclude "META-INF/*.DSA"
+                exclude "META-INF/*.RSA"
+            }
+            into outputDir
+        }
+        delete jar
+        ant.jar(update: "true", index: "true", destfile: jar.getAbsolutePath()) {
+            fileset(dir: outputDir)
+        }
+        delete outputDir
+    }
+}
 
 configurations {
     nativeDeps
@@ -53,6 +72,11 @@ dependencies {
 
     def ignoreServlet = {
         exclude group: 'com.ibm.xsp', module: 'com.ibm.pvc.servlet'
+        exclude group: 'com.ibm.xsp', module: 'com.ibm.notes.java.api.win32.linux'
+        exclude group: 'com.ibm.xsp', module: 'com.ibm.xsp.domino'
+    }
+    def ignoreXmlApis = {
+        exclude group: 'xml-apis', module: 'xml-apis'
     }
 
     implementation "com.darwino.xsp.ios:xpages-ios-shared:${PROJECT_VERSION}", ignoreServlet
@@ -61,7 +85,10 @@ dependencies {
     implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
 
+    // Fill in gaps in the MOE JRE
+    implementation 'xerces:xercesImpl:2.11.0', ignoreXmlApis
     implementation 'org.glassfish.corba:glassfish-corba-omgapi:4.2.0'
+    compile 'org.osgi:org.osgi.service.event:1.3.1'
 
     nativeDeps (
         [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'a', classifier: 'ios-universal' ]

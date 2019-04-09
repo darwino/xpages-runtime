@@ -31,6 +31,8 @@ import org.moe.natj.objc.ann.Selector;
 import com.darwino.commons.Platform;
 import com.darwino.sqlite.IOSInstall;
 
+import javax.faces.webapp.UIComponentTag;
+
 @RegisterOnStartup
 public class Main extends NSObject implements UIApplicationDelegate {
 
@@ -54,7 +56,9 @@ public class Main extends NSObject implements UIApplicationDelegate {
         	IOSInstall.init();
         } catch(Throwable t) {
         	t.printStackTrace();
-    }
+        }
+
+        //Class<?>[] keep = new Class<?>[] { com.darwino.platform.web.PluginDarwinoWeb.class, com.darwino.ios.platform.IOSPlatformLog };
 
 		try {
 	        AppHybridApplication.create();
