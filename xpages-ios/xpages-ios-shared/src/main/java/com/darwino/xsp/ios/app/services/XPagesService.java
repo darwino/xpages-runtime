@@ -11,7 +11,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -43,9 +42,10 @@ public class XPagesService extends HttpService {
 	@Override
 	public void service(HttpServiceContext serviceContext) {
 		try {
-			init(serviceContext);
-			
-			HttpServletRequest req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest());
+			DarwinoServletContextWrapper context = new DarwinoServletContextWrapper(((ServletServiceContext)serviceContext).getServletContext(), ((ServletServiceContext)serviceContext).getHttpRequest());
+			init(context);
+
+			HttpServletRequest req = context.getHttpRequest();
 			HttpServletResponse res = ((ServletServiceContext)serviceContext).getHttpResponse();
 			
 			String pathInfo = StringUtil.toString(req.getPathInfo());
@@ -54,7 +54,7 @@ public class XPagesService extends HttpService {
 			} else if(pathInfo.startsWith("/xsp/.ibmxspres/")) {
 				// globalResources expects pathInfo to be e.g. "/dojoroot/dojo/dojo.js", not "/xsp/.ibmxspres/dojoroot/dojo/dojo.js"
 				String prefix = "/.xsp/xsp/.ibmxspres";
-				req = new DarwinoServletRequestWrapper(((ServletServiceContext)serviceContext).getHttpRequest(), prefix);
+				req = new DarwinoServletRequestWrapper(context, ((ServletServiceContext)serviceContext).getHttpRequest(), prefix);
 				
 				// TODO patch around the method the Dojo resource loader uses to get the resource input stream instead of overriding here
 				if(!maybeWorkaroundAndroid(req, res)) {
@@ -64,7 +64,7 @@ public class XPagesService extends HttpService {
 				// TODO replace with a real resources servlet if possible
 				// Service from a local file
 				String resPath = pathInfo.substring("/xsp".length());
-				InputStream is = XSPUtil.getResourceAsStream(Thread.currentThread().getContextClassLoader(), resPath);
+				InputStream is = XSPUtil.getResourceAsStream(resPath, Thread.currentThread().getContextClassLoader());
 				if(is != null) {
 					try {
 						String contentType = URLConnection.guessContentTypeFromName(resPath);
@@ -88,9 +88,8 @@ public class XPagesService extends HttpService {
 		}
 	}
 
-	private synchronized void init(HttpServiceContext serviceContext) throws IOException {
+	private synchronized void init(DarwinoServletContextWrapper context) throws IOException {
 		if(!this.initialized) {
-			ServletContext context = new DarwinoServletContextWrapper(((ServletServiceContext)serviceContext).getServletContext());
 			ServletConfig conf = new DarwinoServletConfigWrapper(context);
 			ServletContextEvent sce = new ServletContextEvent(context);
 			listener.contextInitialized(sce);

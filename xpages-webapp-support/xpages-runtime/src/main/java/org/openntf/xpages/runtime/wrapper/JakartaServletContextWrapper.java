@@ -19,6 +19,9 @@ import com.ibm.commons.util.StringUtil;
 
 import javax.servlet.*;
 import javax.servlet.descriptor.JspConfigDescriptor;
+
+import org.openntf.xpages.runtime.util.XSPUtil;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,7 +45,7 @@ public class JakartaServletContextWrapper implements ServletContext {
     	
         URL url = delegate.getResource(path);
         if(url == null) {
-        	url = Thread.currentThread().getContextClassLoader().getResource(path);
+        	url = XSPUtil.getResource(path, Thread.currentThread().getContextClassLoader());
         }
         if(url == null && !path.startsWith("/")) {
             url = getClass().getResource("/" + path);
@@ -58,7 +61,7 @@ public class JakartaServletContextWrapper implements ServletContext {
 
         InputStream is = delegate.getResourceAsStream(path);
         if(is == null) {
-        	is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+        	is = XSPUtil.getResourceAsStream(path, Thread.currentThread().getContextClassLoader());
         }
         if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) {
             is = getClass().getResourceAsStream("/" + path);

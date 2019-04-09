@@ -5,13 +5,18 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
+import org.openntf.xpages.runtime.util.XSPUtil;
 import org.openntf.xpages.runtime.wrapper.JakartaServletContextWrapper;
 
 public class DarwinoServletContextWrapper extends JakartaServletContextWrapper {
+	
+	private final HttpServletRequest req;
 
-	public DarwinoServletContextWrapper(ServletContext delegate) {
+	public DarwinoServletContextWrapper(ServletContext delegate, HttpServletRequest req) {
 		super(delegate);
+		this.req = new DarwinoServletRequestWrapper(this, req);
 	}
 
 	@Override
@@ -23,7 +28,7 @@ public class DarwinoServletContextWrapper extends JakartaServletContextWrapper {
 	public URL getResource(String path) throws MalformedURLException {
 		URL result = super.getResource(path);
 		if(result == null) {
-			result = Thread.currentThread().getContextClassLoader().getResource(path);
+			result = XSPUtil.getResource(path, Thread.currentThread().getContextClassLoader());
 		}
 		return result;
 	}
@@ -32,8 +37,12 @@ public class DarwinoServletContextWrapper extends JakartaServletContextWrapper {
 	public InputStream getResourceAsStream(String path) {
 		InputStream result = super.getResourceAsStream(path);
 		if(result == null) {
-			result = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+			result = XSPUtil.getResourceAsStream(path, Thread.currentThread().getContextClassLoader());
 		}
 		return result;
+	}
+	
+	public HttpServletRequest getHttpRequest() {
+		return req;
 	}
 }

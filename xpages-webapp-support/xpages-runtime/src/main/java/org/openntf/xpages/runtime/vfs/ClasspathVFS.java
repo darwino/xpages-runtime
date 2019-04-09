@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.openntf.xpages.runtime.util.XSPUtil;
+
 import com.ibm.commons.util.StringUtil;
 import com.ibm.commons.vfs.VFS;
 import com.ibm.commons.vfs.VFSException;
@@ -51,7 +53,7 @@ public class ClasspathVFS extends VFS {
 		if(isBadClassResource(localPath)) {
 			return new NopVFSFile(this, fileName);
 		}
-		URL uri = context.getContextClassLoader().getResource(localPath);
+		URL uri = XSPUtil.getResource(localPath, context.getContextClassLoader());
 		return new UrlVFSFile(this, fileName, uri);
 	}
 
@@ -98,7 +100,7 @@ public class ClasspathVFS extends VFS {
 		String localPath = localResolve(path);
 		URL uri = null;
 		if(!isBadClassResource(path)) {
-			uri = context.getContextClassLoader().getResource(localPath);
+			uri = XSPUtil.getResource(localPath, context.getContextClassLoader());
 		}
 		if(uri != null) {
 			return super.findFileEntry(path);

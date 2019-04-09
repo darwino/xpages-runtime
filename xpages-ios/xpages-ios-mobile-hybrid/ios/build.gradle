@@ -63,8 +63,8 @@ configurations {
     nativeDeps
 }
 dependencies {
-    // Compile with 'jar' files in the project's 'lib' directory
-    implementation fileTree(dir: 'lib', include: '*.jar')
+    // https://openflow.stanford.edu/display/Beacon/Beacon+on+Android/index.html#BeacononAndroid-Java.Beans for beans.jar
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.darwino:dwo-ios-moe-platform-hybrid:${DARWINO_VERSION}"
 
@@ -84,11 +84,14 @@ dependencies {
     implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
+    implementation 'javax.servlet:jsp-api:2.0'
 
     // Fill in gaps in the MOE JRE
     implementation 'xerces:xercesImpl:2.11.0', ignoreXmlApis
     implementation 'org.glassfish.corba:glassfish-corba-omgapi:4.2.0'
-    compile 'org.osgi:org.osgi.service.event:1.3.1'
+    implementation 'org.osgi:org.osgi.service.event:1.3.1'
+    implementation 'com.ibm.xsp:com.ibm.domino.services:[9.0.1,)', ignoreServlet
+    implementation 'javax.xml.stream:stax-api:1.0-2', ignoreXmlApis
 
     nativeDeps (
         [ group: 'com.darwino', name: 'dwo-native-sqlite', version: "${DARWINO_VERSION}", ext:'a', classifier: 'ios-universal' ]

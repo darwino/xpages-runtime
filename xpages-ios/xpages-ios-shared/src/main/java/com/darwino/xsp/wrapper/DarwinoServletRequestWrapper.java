@@ -1,5 +1,6 @@
 package com.darwino.xsp.wrapper;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
@@ -7,13 +8,15 @@ import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
 public class DarwinoServletRequestWrapper extends JakartaServletRequestWrapper {
 	
 	private final String prefix;
+	private final DarwinoServletContextWrapper context;
 
-	public DarwinoServletRequestWrapper(HttpServletRequest delegate) {
-		this(delegate, "/.xsp");
+	public DarwinoServletRequestWrapper(DarwinoServletContextWrapper servletContext, HttpServletRequest req) {
+		this(servletContext, req, "/.xsp");
 	}
-	public DarwinoServletRequestWrapper(HttpServletRequest delegate, String prefix) {
-		super(delegate);
+	public DarwinoServletRequestWrapper(DarwinoServletContextWrapper servletContext, HttpServletRequest req, String prefix) {
+		super(req);
 		this.prefix = prefix;
+		this.context = servletContext;
 	}
 	
 	@Override
@@ -37,5 +40,10 @@ public class DarwinoServletRequestWrapper extends JakartaServletRequestWrapper {
 	public String getServletPath() {
 		String url = getRequestURI();
 		return url.substring(this.getContextPath().length());
+	}
+	
+	@Override
+	public ServletContext getServletContext() {
+		return context;
 	}
 }

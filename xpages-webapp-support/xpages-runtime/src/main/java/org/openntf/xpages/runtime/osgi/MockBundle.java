@@ -41,7 +41,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public URL getResource(String s) {
-		return XSPUtil.getResource(context.getClass().getClassLoader(), s);
+		return XSPUtil.getResource(s, context.getClass().getClassLoader());
     }
 
     @Override
