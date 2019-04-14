@@ -8,10 +8,6 @@
 	</parent>
 	<artifactId>xpages-ios-shared</artifactId>
 	
-	<properties>
-		<xpages-version>[10.0.1,)</xpages-version>
-	</properties>
-	
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -80,7 +76,6 @@
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.designer.lib.jsf</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>jsf-api</classifier>
 			<exclusions>
 				<exclusion>
@@ -92,7 +87,6 @@
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.designer.lib.jsf</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>jsf-impl</classifier>
 			<exclusions>
 				<exclusion>
@@ -104,7 +98,6 @@
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.designer.lib.jsf</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>commons-digester</classifier>
 			<exclusions>
 				<exclusion>
@@ -116,7 +109,6 @@
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.designer.lib.jsf</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>commons-collections</classifier>
 			<exclusions>
 				<exclusion>
@@ -128,7 +120,6 @@
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.designer.lib.jsf</artifactId>
-			<version>${xpages-version}</version>
 			<classifier>commons-beanutils</classifier>
 			<exclusions>
 				<exclusion>
@@ -138,11 +129,9 @@
 			</exclusions>
 		</dependency>
 		
-		<!-- Required for now due to Bluemix in ExtLib -->
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
-			<version>[9.0.1,)</version>
 			<classifier>Notes</classifier>
 		</dependency>
 	</dependencies>

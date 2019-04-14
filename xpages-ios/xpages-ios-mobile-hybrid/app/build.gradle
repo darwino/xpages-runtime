@@ -62,6 +62,7 @@ dependencies {
 
     implementation "com.darwino:dwo-web-darwino:${DARWINO_VERSION}"
 
+    implementation "com.darwino.xsp.ios:domino-api-shim:${PROJECT_VERSION}", IGNORED_DEPENDENCIES
     implementation "com.darwino.xsp.ios:xpages-ios-shared:${PROJECT_VERSION}", IGNORED_DEPENDENCIES
     implementation "com.darwino.xsp.ios:xpages-ios-mobile:${PROJECT_VERSION}", IGNORED_DEPENDENCIES
     implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", IGNORED_DEPENDENCIES

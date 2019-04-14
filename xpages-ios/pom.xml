@@ -8,12 +8,13 @@
 
 	<packaging>pom</packaging>
 	<modules>
+		<module>domino-api-shim</module>
 		<module>xpages-ios-shared</module>
 		<module>xpages-ios-webui</module>
 		<module>xpages-ios-j2ee</module>
 		<module>xpages-ios-mobile</module>
 		<module>xpages-ios-mobile-hybrid</module>
-  </modules>
+	</modules>
 
 	<properties>
 		<DARWINO_VERSION>2.5.0-SNAPSHOT</DARWINO_VERSION>
@@ -35,6 +36,8 @@
 		<android.plugin.version>4.3.0</android.plugin.version>
 		<android.platform.maven.version>4.4.2_r4</android.platform.maven.version>
 		<android.platform.sdk.version>19</android.platform.sdk.version>
+		
+		<xpages-version>[10.0.1,)</xpages-version>
 	</properties>
 
 
@@ -70,6 +73,74 @@
 				<artifactId>javax.el-api</artifactId>
 				<version>2.2.1</version>
 				<scope>provided</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.designer.lib.jsf</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>jsf-api</classifier>
+				<exclusions>
+					<exclusion>
+						<groupId>com.ibm.xsp</groupId>
+						<artifactId>com.ibm.pvc.servlet</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.designer.lib.jsf</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>jsf-impl</classifier>
+				<exclusions>
+					<exclusion>
+						<groupId>com.ibm.xsp</groupId>
+						<artifactId>com.ibm.pvc.servlet</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.designer.lib.jsf</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>commons-digester</classifier>
+				<exclusions>
+					<exclusion>
+						<groupId>com.ibm.xsp</groupId>
+						<artifactId>com.ibm.pvc.servlet</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.designer.lib.jsf</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>commons-collections</classifier>
+				<exclusions>
+					<exclusion>
+						<groupId>com.ibm.xsp</groupId>
+						<artifactId>com.ibm.pvc.servlet</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.designer.lib.jsf</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>commons-beanutils</classifier>
+				<exclusions>
+					<exclusion>
+						<groupId>com.ibm.xsp</groupId>
+						<artifactId>com.ibm.pvc.servlet</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
+				<version>[9.0.1,)</version>
+				<classifier>Notes</classifier>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -215,7 +286,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>
