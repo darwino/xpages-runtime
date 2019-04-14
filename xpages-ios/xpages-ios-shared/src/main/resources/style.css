@@ -19,10 +19,14 @@ html, body {
 	margin-top: 2em;
 }
 #footer img {
+	display: block;
+	float: left;
+	margin-right: 0.5em;
 	max-width: 48px;
 	max-height: 48px;
 }
 #footer ul {
+	clear: left;
 	padding-left: 0;
 }
 #footer li {

@@ -46,20 +46,23 @@ public class Layout extends AbstractCompiledPageDispatcher{
             new ComponentInfo(true, new int[]{3}), // 4 div3
             ComponentInfo.EMPTY_NORMAL, // 5 image
             ComponentInfo.EMPTY_NORMAL, // 6 text2
-            ComponentInfo.EMPTY_NORMAL, // 7 link
-            new ComponentInfo(true, new int[]{7}), // 8 li
-            ComponentInfo.EMPTY_NORMAL, // 9 link2
-            new ComponentInfo(true, new int[]{9}), // 10 li2
-            ComponentInfo.EMPTY_NORMAL, // 11 link3
-            new ComponentInfo(true, new int[]{11}), // 12 li3
-            new ComponentInfo(true, new int[]{8, 10, 12}), // 13 ul
-            new ComponentInfo(true, new int[]{5, 6, 13}), // 14 div4
-            new ComponentInfo(true, new int[]{2, 4, 14}), // 15 div
-            new ComponentInfo(false, new int[]{15}), // 16 view
+            ComponentInfo.EMPTY_MARKUP, // 7 br
+            ComponentInfo.EMPTY_NORMAL, // 8 text3
+            new ComponentInfo(true, new int[]{6, 7, 8}), // 9 p
+            ComponentInfo.EMPTY_NORMAL, // 10 link
+            new ComponentInfo(true, new int[]{10}), // 11 li
+            ComponentInfo.EMPTY_NORMAL, // 12 link2
+            new ComponentInfo(true, new int[]{12}), // 13 li2
+            ComponentInfo.EMPTY_NORMAL, // 14 link3
+            new ComponentInfo(true, new int[]{14}), // 15 li3
+            new ComponentInfo(true, new int[]{11, 13, 15}), // 16 ul
+            new ComponentInfo(true, new int[]{5, 9, 16}), // 17 div4
+            new ComponentInfo(true, new int[]{2, 4, 17}), // 18 div
+            new ComponentInfo(false, new int[]{18}), // 19 view
         };
         
         public LayoutPage() {
-            super(16, s_infos );
+            super(19, s_infos );
         }
         
         public int getComponentForId(String id) throws NoSuchComponentException { 
@@ -70,9 +73,9 @@ public class Layout extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator)
                 throws NoSuchComponentException { 
             switch (id) {
-            case 16:
+            case 19:
                 return createView(context, parent, evaluator);
-            case 15:
+            case 18:
                 return createDiv(context, parent, evaluator);
             case 2:
                 return createDiv2(context, parent, evaluator);
@@ -84,25 +87,31 @@ public class Layout extends AbstractCompiledPageDispatcher{
                 return createDiv3(context, parent, evaluator);
             case 3:
                 return createCallback(context, parent, evaluator);
-            case 14:
+            case 17:
                 return createDiv4(context, parent, evaluator);
             case 5:
                 return createImage(context, parent, evaluator);
+            case 9:
+                return createP(context, parent, evaluator);
             case 6:
                 return createText2(context, parent, evaluator);
-            case 13:
-                return createUl(context, parent, evaluator);
-            case 8:
-                return createLi(context, parent, evaluator);
             case 7:
-                return createLink(context, parent, evaluator);
-            case 10:
-                return createLi2(context, parent, evaluator);
-            case 9:
-                return createLink2(context, parent, evaluator);
-            case 12:
-                return createLi3(context, parent, evaluator);
+                return createBr(context, parent, evaluator);
+            case 8:
+                return createText3(context, parent, evaluator);
+            case 16:
+                return createUl(context, parent, evaluator);
             case 11:
+                return createLi(context, parent, evaluator);
+            case 10:
+                return createLink(context, parent, evaluator);
+            case 13:
+                return createLi2(context, parent, evaluator);
+            case 12:
+                return createLink2(context, parent, evaluator);
+            case 15:
+                return createLi3(context, parent, evaluator);
+            case 14:
                 return createLink3(context, parent, evaluator);
             }
             throw new NoSuchComponentException(id);
@@ -177,11 +186,35 @@ public class Layout extends AbstractCompiledPageDispatcher{
             return result;
         }
 
+        private UIComponent createP(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            UIPassThroughTag component = new UIPassThroughTag();
+            component.setTag("p");
+            return component;
+        }
+
         private UIComponent createText2(FacesContext context, 
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             XspOutputText result = new XspOutputText();
-            String sourceId = "footer/xp:text[1]/@value";
+            String sourceId = "footer/p[1]/xp:text[1]/@value";
             String valueExpr = "Server: #{facesContext.externalContext.request.session.servletContext.serverInfo}";
+            ValueBinding value = evaluator.createValueBinding(result, valueExpr, sourceId,Object.class);
+            result.setValueBinding("value", value);
+            return result;
+        }
+
+        private UIComponent createBr(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            UIPassThroughTag component = new UIPassThroughTag();
+            component.setTag("br");
+            return component;
+        }
+
+        private UIComponent createText3(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            XspOutputText result = new XspOutputText();
+            String sourceId = "footer/p[1]/xp:text[2]/@value";
+            String valueExpr = "Database: #{javascript: database ? database.getClass().getName() : \'\'}";
             ValueBinding value = evaluator.createValueBinding(result, valueExpr, sourceId,Object.class);
             result.setValueBinding("value", value);
             return result;

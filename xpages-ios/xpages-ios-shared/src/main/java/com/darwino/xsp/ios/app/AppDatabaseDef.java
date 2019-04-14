@@ -9,13 +9,14 @@ import com.darwino.commons.json.JsonException;
 import com.darwino.commons.util.StringUtil;
 import com.darwino.jsonstore.impl.DatabaseFactoryImpl;
 import com.darwino.jsonstore.meta._Database;
+import com.darwino.jsonstore.meta._DatabaseACL;
 
 /**
  * Database Definition.
  */
 public class AppDatabaseDef extends DatabaseFactoryImpl {
 
-	public static final int DATABASE_VERSION	= 1;
+	public static final int DATABASE_VERSION	= 8;
 	public static final String DATABASE_NAME	= "xpagesios";
 	
     public static final String[] DATABASES = new String[] {
@@ -57,6 +58,10 @@ public class AppDatabaseDef extends DatabaseFactoryImpl {
 		_Database db = new _Database(DATABASE_NAME, "XPages iOS", DATABASE_VERSION);
 
 		db.setReplicationEnabled(true);
+		_DatabaseACL acl = new _DatabaseACL();
+		acl.addAnonymous(_DatabaseACL.ROLE_FULLEDITOR);
+		acl.addAuthenticated(_DatabaseACL.ROLE_FULLEDITOR);
+		db.setACL(acl);
 		
 		// Document base security
 //		db.setDocumentSecurity(Database.DOCSEC_INCLUDE);

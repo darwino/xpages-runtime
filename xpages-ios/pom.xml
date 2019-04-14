@@ -105,10 +105,21 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			<dependency>
+				<groupId>com.darwino.domino</groupId>
+				<artifactId>com.darwino.domino.notesbe</artifactId>
+				<version>${DARWINO_VERSION}</version>
+			</dependency>
 			
 			<!--
 				XPages Core and Domino 
 			-->
+			<dependency>
+				<groupId>com.ibm.xsp</groupId>
+				<artifactId>com.ibm.xsp.core</artifactId>
+				<version>${xpages-version}</version>
+				<classifier>lwpd.xsp.core</classifier>
+			</dependency>
 			<dependency>
 				<groupId>com.ibm.xsp</groupId>
 				<artifactId>com.ibm.designer.lib.jsf</artifactId>

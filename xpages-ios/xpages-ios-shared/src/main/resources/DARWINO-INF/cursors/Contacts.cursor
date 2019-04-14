@@ -1,0 +1,16 @@
+{
+  "categoryCount": 0,
+  "extract": {
+    "emailaddress": "emailaddress",
+    "firstname": "firstname",
+    "form": "form",
+    "lastname": "lastname"
+  },
+  "options": 128,
+  "orderBy": [
+    "lastname"
+  ],
+  "query": {
+    "form": "Contact"
+  }
+}

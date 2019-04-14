@@ -2,4 +2,12 @@
 	<resources>
 		<styleSheet href="/style.css"/>
 	</resources>
+	
+	<control>
+		<name>ViewRoot</name>
+		<property mode="concat">
+			<name>pageTitle</name>
+			<value>#{database.title}</value>
+		</property>
+	</control>
 </theme>
