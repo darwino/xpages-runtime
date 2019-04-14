@@ -5,6 +5,10 @@
 	
 	<control>
 		<name>ViewRoot</name>
+		<property>
+			<name>pageIcon</name>
+			<value>/$Icon</value>
+		</property>
 		<property mode="concat">
 			<name>pageTitle</name>
 			<value>#{database.title}</value>
