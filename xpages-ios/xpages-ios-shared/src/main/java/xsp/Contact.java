@@ -63,16 +63,18 @@ public class Contact extends AbstractCompiledPageDispatcher{
             new ComponentInfo(true, new int[]{4, 6, 8, 10, 12, 14}), // 15 dl
             new ComponentInfo(false, new int[]{15}), // 16 "form"
             ComponentInfo.EMPTY_NORMAL, // 17 eventHandler2
-            new ComponentInfo(false, new int[]{17}), // 18 "save"
-            ComponentInfo.EMPTY_NORMAL, // 19 eventHandler3
-            new ComponentInfo(false, new int[]{19}), // 20 "delete"
-            new ComponentInfo(true, new int[]{18, 20}), // 21 div2
-            new ComponentInfo(false, new int[]{2, 16, 21}), // 22 layout
-            new ComponentInfo(false, new int[]{22}), // 23 view
+            new ComponentInfo(false, new int[]{17}), // 18 "delete"
+            new ComponentInfo(true, new int[]{18}), // 19 div3
+            ComponentInfo.EMPTY_NORMAL, // 20 eventHandler3
+            new ComponentInfo(false, new int[]{20}), // 21 "save"
+            ComponentInfo.EMPTY_NORMAL, // 22 link
+            new ComponentInfo(true, new int[]{19, 21, 22}), // 23 div2
+            new ComponentInfo(false, new int[]{2, 16, 23}), // 24 layout
+            new ComponentInfo(false, new int[]{24}), // 25 view
         };
         
         public ContactPage() {
-            super(23, s_infos );
+            super(25, s_infos );
         }
         
         public int getComponentForId(String id) throws NoSuchComponentException { 
@@ -80,10 +82,10 @@ public class Contact extends AbstractCompiledPageDispatcher{
                 return 1;
             if( "form".equals(id) )
                 return 16;
-            if( "save".equals(id) )
-                return 18;
             if( "delete".equals(id) )
-                return 20;
+                return 18;
+            if( "save".equals(id) )
+                return 21;
             return -1;
         }
         
@@ -91,9 +93,9 @@ public class Contact extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator)
                 throws NoSuchComponentException { 
             switch (id) {
-            case 23:
+            case 25:
                 return createView(context, parent, evaluator);
-            case 22:
+            case 24:
                 return createLayout(context, parent, evaluator);
             case 2:
                 return createDiv(context, parent, evaluator);
@@ -129,16 +131,20 @@ public class Contact extends AbstractCompiledPageDispatcher{
                 return createDd3(context, parent, evaluator);
             case 13:
                 return createInputText3(context, parent, evaluator);
-            case 21:
+            case 23:
                 return createDiv2(context, parent, evaluator);
+            case 19:
+                return createDiv3(context, parent, evaluator);
             case 18:
-                return createSave(context, parent, evaluator);
+                return createDelete(context, parent, evaluator);
             case 17:
                 return createEventHandler2(context, parent, evaluator);
+            case 21:
+                return createSave(context, parent, evaluator);
             case 20:
-                return createDelete(context, parent, evaluator);
-            case 19:
                 return createEventHandler3(context, parent, evaluator);
+            case 22:
+                return createLink(context, parent, evaluator);
             }
             throw new NoSuchComponentException(id);
         }
@@ -353,23 +359,12 @@ public class Contact extends AbstractCompiledPageDispatcher{
             return component;
         }
 
-        private UIComponent createSave(FacesContext context, 
+        private UIComponent createDiv3(FacesContext context, 
                 UIComponent parent, PageExpressionEvaluator evaluator) {
-            XspCommandButton result = new XspCommandButton();
-            result.setValue("Save");
-            setId(result, "save");
-            return result;
-        }
-
-        private UIComponent createEventHandler2(FacesContext context, 
-                UIComponent parent, PageExpressionEvaluator evaluator) {
-            XspEventHandler result = new XspEventHandler();
-            result.setImmediate(false);
-            result.setSubmit(true);
-            result.setEvent("onclick");
-            result.setSave(true);
-            result.setRefreshMode("complete");
-            return result;
+            UIPassThroughTag component = new UIPassThroughTag();
+            component.setTag("div");
+            component.addAttribute("style", "float: right");
+            return component;
         }
 
         private UIComponent createDelete(FacesContext context, 
@@ -384,7 +379,7 @@ public class Contact extends AbstractCompiledPageDispatcher{
             return result;
         }
 
-        private UIComponent createEventHandler3(FacesContext context, 
+        private UIComponent createEventHandler2(FacesContext context, 
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             XspEventHandler result = new XspEventHandler();
             DeleteDocumentAction action = new DeleteDocumentAction();
@@ -397,6 +392,33 @@ public class Contact extends AbstractCompiledPageDispatcher{
             result.setSubmit(true);
             result.setEvent("onclick");
             result.setRefreshMode("complete");
+            return result;
+        }
+
+        private UIComponent createSave(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            XspCommandButton result = new XspCommandButton();
+            result.setValue("Save");
+            setId(result, "save");
+            return result;
+        }
+
+        private UIComponent createEventHandler3(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            XspEventHandler result = new XspEventHandler();
+            result.setImmediate(false);
+            result.setSubmit(true);
+            result.setEvent("onclick");
+            result.setSave(true);
+            result.setRefreshMode("complete");
+            return result;
+        }
+
+        private UIComponent createLink(FacesContext context, 
+                UIComponent parent, PageExpressionEvaluator evaluator) {
+            XspOutputLink result = new XspOutputLink();
+            result.setValue("/home.xsp");
+            result.setText("Cancel");
             return result;
         }
 

@@ -16,8 +16,8 @@ import com.darwino.jsonstore.meta._DatabaseACL;
  */
 public class AppDatabaseDef extends DatabaseFactoryImpl {
 
-	public static final int DATABASE_VERSION	= 8;
-	public static final String DATABASE_NAME	= "xpagesios";
+	public static final int DATABASE_VERSION	= 10;
+	public static final String DATABASE_NAME	= "xpagesios"; //$NON-NLS-1$
 	
     public static final String[] DATABASES = new String[] {
     	DATABASE_NAME
@@ -26,7 +26,7 @@ public class AppDatabaseDef extends DatabaseFactoryImpl {
 	// The list  of instances is defined through a property for the DB
 	public static String[] getInstances() {
 		//JsonArray a = new JsonArray(session.getDatabaseInstances(dbName));
-		String inst = Platform.getProperty("xpagesios.instances");
+		String inst = Platform.getProperty("xpagesios.instances"); //$NON-NLS-1$
 		if(StringUtil.isNotEmpty(inst)) {
 			return StringUtil.splitString(inst, ',', true);
 		}
@@ -55,7 +55,7 @@ public class AppDatabaseDef extends DatabaseFactoryImpl {
 	}
 	
 	public _Database loadDatabase_xpagesios() throws JsonException {
-		_Database db = new _Database(DATABASE_NAME, "XPages iOS", DATABASE_VERSION);
+		_Database db = new _Database(DATABASE_NAME, "XPages App", DATABASE_VERSION);
 
 		db.setReplicationEnabled(true);
 		_DatabaseACL acl = new _DatabaseACL();

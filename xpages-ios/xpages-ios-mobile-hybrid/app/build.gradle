@@ -52,6 +52,7 @@ configurations {
 dependencies {
     // https://openflow.stanford.edu/display/Beacon/Beacon+on+Android/index.html#BeacononAndroid-Java.Beans for beans.jar
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: '../libs', include: ['*.jar'])
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })

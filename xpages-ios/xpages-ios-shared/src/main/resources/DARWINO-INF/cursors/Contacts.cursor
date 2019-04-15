@@ -1,10 +1,10 @@
 {
   "categoryCount": 0,
   "extract": {
-    "emailaddress": "emailaddress",
-    "firstname": "firstname",
+    "EmailAddress": "emailaddress",
+    "FirstName": "firstname",
     "form": "form",
-    "lastname": "lastname"
+    "LastName": "lastname"
   },
   "options": 128,
   "orderBy": [

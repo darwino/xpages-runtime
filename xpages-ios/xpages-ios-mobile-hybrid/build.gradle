@@ -31,4 +31,5 @@ ext.PROJECT_VERSION="0.0.1-SNAPSHOT"
 ext.IGNORED_DEPENDENCIES = {
     exclude group: 'com.ibm.xsp', module: 'com.ibm.pvc.servlet'
     exclude group: 'com.ibm.xsp', module: 'com.ibm.domino.napi'
+    exclude group: 'com.ibm.xsp', module: 'com.ibm.xsp.domino'
 }

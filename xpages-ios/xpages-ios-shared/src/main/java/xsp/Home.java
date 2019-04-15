@@ -170,6 +170,7 @@ public class Home extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             XspViewColumnHeader result = new XspViewColumnHeader();
             result.setValue("Last Name");
+            result.setSortable(true);
             setId(result, "viewColumnHeader1");
             return result;
         }
@@ -186,6 +187,7 @@ public class Home extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             XspViewColumnHeader result = new XspViewColumnHeader();
             result.setValue("First Name");
+            result.setSortable(true);
             setId(result, "viewColumnHeader2");
             return result;
         }
@@ -202,6 +204,7 @@ public class Home extends AbstractCompiledPageDispatcher{
                 UIComponent parent, PageExpressionEvaluator evaluator) {
             XspViewColumnHeader result = new XspViewColumnHeader();
             result.setValue("Email Address");
+            result.setSortable(true);
             setId(result, "viewColumnHeader3");
             return result;
         }

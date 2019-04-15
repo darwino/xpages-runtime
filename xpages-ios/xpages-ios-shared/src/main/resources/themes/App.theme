@@ -7,7 +7,7 @@
 		<name>ViewRoot</name>
 		<property>
 			<name>pageIcon</name>
-			<value>/$Icon</value>
+			<value>#{env.iconPath}</value>
 		</property>
 		<property mode="concat">
 			<name>pageTitle</name>
