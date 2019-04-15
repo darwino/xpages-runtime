@@ -11,8 +11,6 @@ import lotus.domino.Database;
 import lotus.domino.Document;
 import lotus.domino.Session;
 
-// TODO consider if this is enough - Android will prove difficult
-// Maybe it'll make sense to repackage the adapter jar
 public class NotesContext {
 	public static ThreadLocal<NotesContext> contextThreadLocal = new ThreadLocal<NotesContext>();
 	
