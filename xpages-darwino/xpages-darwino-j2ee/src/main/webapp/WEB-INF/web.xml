@@ -2,7 +2,7 @@
 <web-app metadata-complete="true" version="3.0"
  xmlns="http://java.sun.com/xml/ns/javaee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
- <display-name>XPages iOS</display-name>
+ <display-name>XPages Darwino</display-name>
  <!-- Make sure that the database is properly deployed when the app is launched -->
  <context-param>
   <param-name>dwo-auto-deploy-jsonstore</param-name>

@@ -79,9 +79,9 @@ dependencies {
         exclude group: 'xml-apis', module: 'xml-apis'
     }
 
-    implementation "com.darwino.xsp.ios:xpages-ios-shared:${PROJECT_VERSION}", ignoreServlet
-    implementation "com.darwino.xsp.ios:xpages-ios-mobile:${PROJECT_VERSION}", ignoreServlet
-    implementation "com.darwino.xsp.ios:xpages-ios-webui:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-darwino-shared:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-darwino-mobile:${PROJECT_VERSION}", ignoreServlet
+    implementation "com.darwino.xsp.ios:xpages-darwino-webui:${PROJECT_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-commons-runtime-debug:${DARWINO_VERSION}", ignoreServlet
     implementation "com.darwino:dwo-mobile-platform-hybrid-jetty:${DARWINO_VERSION}", ignoreServlet
     implementation 'javax.servlet:jsp-api:2.0'

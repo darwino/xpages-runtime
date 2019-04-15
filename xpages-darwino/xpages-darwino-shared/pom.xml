@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.darwino.xsp.ios</groupId>
-		<artifactId>xpages-ios</artifactId>
+		<artifactId>xpages-darwino</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xpages-ios-shared</artifactId>
+	<artifactId>xpages-darwino-shared</artifactId>
 	
 	<dependencies>
 		<dependency>

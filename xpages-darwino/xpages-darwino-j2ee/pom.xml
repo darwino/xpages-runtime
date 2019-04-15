@@ -3,13 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.darwino.xsp.ios</groupId>
-		<artifactId>xpages-ios</artifactId>
+		<artifactId>xpages-darwino</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>xpages-ios-j2ee</artifactId>
+	<artifactId>xpages-darwino-j2ee</artifactId>
 	
 	<packaging>war</packaging>
-	<name>XPages iOS</name>
+	<name>XPages Darwino</name>
 
 	<dependencies>
 		<dependency>
@@ -76,12 +76,12 @@
 
 		<dependency>
 			<groupId>com.darwino.xsp.ios</groupId>
-			<artifactId>xpages-ios-shared</artifactId>
+			<artifactId>xpages-darwino-shared</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.darwino.xsp.ios</groupId>
-			<artifactId>xpages-ios-webui</artifactId>
+			<artifactId>xpages-darwino-webui</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		
@@ -128,7 +128,7 @@
 	</dependencyManagement>
 
 	<build>
-        <finalName>xpagesios</finalName>
+        <finalName>xpagesdarwino</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
