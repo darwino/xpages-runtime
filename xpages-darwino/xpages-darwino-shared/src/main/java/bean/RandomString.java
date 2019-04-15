@@ -17,17 +17,17 @@ public class RandomString implements Serializable {
 	public String getRandomString() throws NoSuchAlgorithmException {
 		byte[] bytes = new byte[10];
 		rnd.nextBytes(bytes);
-		MessageDigest crypt = MessageDigest.getInstance("SHA-1");
+		MessageDigest crypt = MessageDigest.getInstance("SHA-1"); //$NON-NLS-1$
         crypt.reset();
         crypt.update(bytes);
-		return byteToHex(crypt.digest());
+		return byteToHex(crypt.digest()).substring(0, 8);
 	}
 	private static String byteToHex(final byte[] hash)
     {
         Formatter formatter = new Formatter();
         for (byte b : hash)
         {
-            formatter.format("%02x", b);
+            formatter.format("%02x", b); //$NON-NLS-1$
         }
         String result = formatter.toString();
         formatter.close();
