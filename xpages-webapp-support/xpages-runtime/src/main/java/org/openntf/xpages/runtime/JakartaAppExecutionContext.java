@@ -51,7 +51,9 @@ public class JakartaAppExecutionContext extends ServletExecutionContext {
 				if (!var1.exists()) {
 					try {
 						URL var2 = servletContext.getResource(System.getProperty("user.dir"));
-						this.appDirectory = this.appDirectory + var2.getFile();
+						if(var2 != null) {
+							this.appDirectory = this.appDirectory + var2.getFile();
+						}
 					} catch (MalformedURLException e) {
 						throw new RuntimeException(e);
 					}

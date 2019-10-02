@@ -85,5 +85,16 @@
 			<artifactId>xsp.http.bootstrap</artifactId>
 			<version>${xpages-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.domino.services</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 </project>
