@@ -31,11 +31,21 @@ import java.util.Map;
 
 public class JakartaServletRequestWrapper implements HttpServletRequest {
     private final HttpServletRequest delegate;
+    private final String servletPath;
+    private final String pathInfo;
 	
 	private Principal overridePrincipal;
 
     public JakartaServletRequestWrapper(HttpServletRequest delegate) {
         this.delegate = delegate;
+        this.servletPath = null;
+        this.pathInfo = null;
+    }
+    
+    public JakartaServletRequestWrapper(HttpServletRequest delegate, String servletPath, String pathInfo) {
+    	this.delegate = delegate;
+    	this.servletPath = servletPath;
+    	this.pathInfo = pathInfo;
     }
 
     @Override
@@ -48,7 +58,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
     		return new Principal() {
     			@Override
 				public String getName() {
-					return "Anonymous";
+					return "CN=Jacob Winn/O=CMS";
 				}
     		};
     	}
@@ -102,7 +112,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 
     @Override
     public String getPathInfo() {
-        return delegate.getPathInfo();
+        return pathInfo == null ? delegate.getPathInfo() : pathInfo;
     }
 
     @Override
@@ -147,7 +157,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
 
     @Override
     public String getServletPath() {
-        return delegate.getServletPath();
+        return servletPath == null ? delegate.getServletPath() : servletPath;
     }
 
     @Override

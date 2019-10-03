@@ -299,5 +299,65 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib.oneui</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.theme.bootstrap</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib.mobile</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib.domino</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 </project>

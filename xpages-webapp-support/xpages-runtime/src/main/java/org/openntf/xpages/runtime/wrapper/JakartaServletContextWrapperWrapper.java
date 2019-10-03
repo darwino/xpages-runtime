@@ -37,6 +37,7 @@ public class JakartaServletContextWrapperWrapper extends ServletContextWrapper {
 		if(result == null) {
 			result = super.getResource(path);
 		}
+		System.out.println("getResource path " + path + " -> " + result);
 		return result;
 	}
 	
@@ -46,6 +47,7 @@ public class JakartaServletContextWrapperWrapper extends ServletContextWrapper {
 		if(result == null) {
 			result = super.getResourceAsStream(path);
 		}
+		System.out.println("getResourceAsStream path " + path + " -> " + result);
 		return result;
 	}
 	

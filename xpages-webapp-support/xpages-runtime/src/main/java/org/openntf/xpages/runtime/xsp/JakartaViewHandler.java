@@ -14,6 +14,7 @@ public class JakartaViewHandler extends ViewHandlerExImpl {
 	@Override
 	public String getResourceURL(FacesContext facesContext, String res) {
 		String url = super.getResourceURL(facesContext, res);
+		System.out.println("res url for "+ res + " -> " + url);
 		return url;
 	}
 }

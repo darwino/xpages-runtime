@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.*;
+import java.util.jar.Manifest;
 
 import org.openntf.xpages.runtime.util.XSPUtil;
 import org.osgi.framework.Bundle;
@@ -29,6 +30,8 @@ import org.osgi.framework.BundleException;
 import org.osgi.framework.ServiceReference;
 
 import com.ibm.commons.util.PathUtil;
+import com.ibm.commons.util.StringUtil;
+import com.ibm.commons.util.io.StreamUtil;
 
 public class MockBundle implements Bundle {
 
@@ -69,6 +72,10 @@ public class MockBundle implements Bundle {
     	try {
 	    	// Not a perfect version, but it'll do
 	    	String path = PathUtil.concat(s, s1, '/');
+	    	if(path.contains("DynamicContent")) {
+	    		System.out.println("trying to get " + path);
+	    		System.out.println("-- " + Collections.list(getResources(path)));
+	    	}
 			return getResources(path);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -83,6 +90,64 @@ public class MockBundle implements Bundle {
     public void setBundleContext(BundleContext bundleContext) {
 		this.bundleContext = bundleContext;
 	}
+
+    @Override
+    public Dictionary<String, String> getHeaders() {
+    	Manifest mf = new Manifest();
+    	InputStream is = context.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
+    	try {
+    		mf.read(is);
+    	} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+    		StreamUtil.close(is);
+    	}
+        Dictionary<String, String> result = new Hashtable<String, String>();
+        for(Map.Entry<Object, Object> entry : mf.getMainAttributes().entrySet()) {
+        	result.put(StringUtil.toString(entry.getKey()), StringUtil.toString(entry.getValue()));
+        }
+        return result;
+    }
+
+    @Override
+    public Dictionary<String, String> getHeaders(String s) {
+    	Manifest mf = new Manifest();
+    	InputStream is = context.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
+    	try {
+    		mf.read(is);
+    	} catch (IOException e) {
+			throw new RuntimeException(e);
+		} finally {
+    		StreamUtil.close(is);
+    	}
+        Dictionary<String, String> result = new Hashtable<String, String>();
+        for(Map.Entry<Object, Object> entry : mf.getAttributes(s).entrySet()) {
+        	result.put(StringUtil.toString(entry.getKey()), StringUtil.toString(entry.getValue()));
+        }
+        return result;
+    }
+
+    @Override
+    public String getSymbolicName() {
+    	String name = getHeaders().get("Bundle-SymbolicName");
+    	if(StringUtil.isNotEmpty(name)) {
+	    	int semiIndex = name.indexOf(";");
+	    	if(semiIndex > -1) {
+	    		name = name.substring(0, semiIndex);
+	    	}
+    	}
+        return name;
+    }
+
+    @Override
+    public org.osgi.framework.Version getVersion() {
+    	String v = getHeaders().get("Bundle-Version");
+    	if(StringUtil.isEmpty(v)) {
+    		return null;
+    	} else {
+    		return new org.osgi.framework.Version(v);
+    	}
+    }
     
     // *******************************************************************************
 	// * Stubbed methods
@@ -134,11 +199,6 @@ public class MockBundle implements Bundle {
     }
 
     @Override
-    public Dictionary<String, String> getHeaders() {
-        return new Hashtable<String, String>();
-    }
-
-    @Override
     public long getBundleId() {
         return 0;
     }
@@ -164,22 +224,7 @@ public class MockBundle implements Bundle {
     }
 
     @Override
-    public Dictionary<String, String> getHeaders(String s) {
-        return new Hashtable<String, String>();
-    }
-
-    @Override
-    public String getSymbolicName() {
-        return null;
-    }
-
-    @Override
     public Map<X509Certificate, List<X509Certificate>> getSignerCertificates(int i) {
-        return null;
-    }
-
-    @Override
-    public org.osgi.framework.Version getVersion() {
         return null;
     }
 
