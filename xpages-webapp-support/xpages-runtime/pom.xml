@@ -28,6 +28,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -39,6 +43,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -52,6 +60,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -63,6 +75,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -76,6 +92,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -87,6 +107,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -102,6 +126,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -114,6 +142,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -121,18 +153,36 @@
 			<artifactId>com.ibm.commons</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.commons.vfs</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons.vfs</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.jscript</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons.ibmjs</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
@@ -143,6 +193,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -156,6 +210,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -163,12 +221,24 @@
 			<artifactId>com.ibm.designer.runtime.directory</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.runtime.directory</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.commons.xml</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.commons.xml</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Themes and Dojo -->
@@ -177,18 +247,36 @@
 			<artifactId>com.ibm.xsp.dojo</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.dojo</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.xsp.theme.oneui.idx</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.theme.oneui.idx</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.xsp.theme.oneuiv302</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>xsp.theme.oneuiv302</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		
@@ -203,6 +291,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -210,6 +302,12 @@
 			<artifactId>com.ibm.domino.napi</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.napi</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
@@ -221,6 +319,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -228,12 +330,24 @@
 			<artifactId>com.ibm.domino.xsp.adapter.nsf</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.adapter.nsf</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
 			<version>[9.0.1,)</version>
 			<classifier>Notes</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
@@ -244,6 +358,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -267,6 +385,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -281,6 +403,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -297,6 +423,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -311,6 +441,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -327,6 +461,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -342,6 +480,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -356,6 +498,29 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.ibm.xsp</groupId>
+			<artifactId>com.ibm.xsp.extlib.relational</artifactId>
+			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.domino.services</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

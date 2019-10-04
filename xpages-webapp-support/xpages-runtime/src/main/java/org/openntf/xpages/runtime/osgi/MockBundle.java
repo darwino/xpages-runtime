@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.*;
+import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
 import org.openntf.xpages.runtime.util.XSPUtil;
@@ -31,7 +32,6 @@ import org.osgi.framework.ServiceReference;
 
 import com.ibm.commons.util.PathUtil;
 import com.ibm.commons.util.StringUtil;
-import com.ibm.commons.util.io.StreamUtil;
 
 public class MockBundle implements Bundle {
 
@@ -72,10 +72,6 @@ public class MockBundle implements Bundle {
     	try {
 	    	// Not a perfect version, but it'll do
 	    	String path = PathUtil.concat(s, s1, '/');
-	    	if(path.contains("DynamicContent")) {
-	    		System.out.println("trying to get " + path);
-	    		System.out.println("-- " + Collections.list(getResources(path)));
-	    	}
 			return getResources(path);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -93,15 +89,7 @@ public class MockBundle implements Bundle {
 
     @Override
     public Dictionary<String, String> getHeaders() {
-    	Manifest mf = new Manifest();
-    	InputStream is = context.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
-    	try {
-    		mf.read(is);
-    	} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-    		StreamUtil.close(is);
-    	}
+    	Manifest mf = getManifest();
         Dictionary<String, String> result = new Hashtable<String, String>();
         for(Map.Entry<Object, Object> entry : mf.getMainAttributes().entrySet()) {
         	result.put(StringUtil.toString(entry.getKey()), StringUtil.toString(entry.getValue()));
@@ -111,20 +99,35 @@ public class MockBundle implements Bundle {
 
     @Override
     public Dictionary<String, String> getHeaders(String s) {
-    	Manifest mf = new Manifest();
-    	InputStream is = context.getClass().getResourceAsStream("/META-INF/MANIFEST.MF");
-    	try {
-    		mf.read(is);
-    	} catch (IOException e) {
-			throw new RuntimeException(e);
-		} finally {
-    		StreamUtil.close(is);
-    	}
+    	Manifest mf = getManifest();
         Dictionary<String, String> result = new Hashtable<String, String>();
         for(Map.Entry<Object, Object> entry : mf.getAttributes(s).entrySet()) {
         	result.put(StringUtil.toString(entry.getKey()), StringUtil.toString(entry.getValue()));
         }
         return result;
+    }
+    
+    private Manifest manifest;
+    private synchronized Manifest getManifest() {
+    	if(this.manifest == null) {
+        	// TODO have this look for the specific context class's manifest, which may require parsing URLs
+        	String path = context.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        	if(StringUtil.isNotEmpty(path) && path.endsWith(".jar")) {
+        		try {
+					JarFile f = new JarFile(new File(path));
+					try {
+						this.manifest = f.getManifest();
+					} finally {
+						f.close();
+					}
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+        	} else {
+        		this.manifest = new Manifest();
+        	}
+    	}
+    	return this.manifest;
     }
 
     @Override

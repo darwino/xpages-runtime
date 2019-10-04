@@ -36,6 +36,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -43,6 +47,12 @@
 			<artifactId>com.ibm.domino.napi</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.napi</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
@@ -54,6 +64,10 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -61,12 +75,32 @@
 			<artifactId>com.ibm.domino.xsp.adapter.nsf</artifactId>
 			<version>${xpages-version}</version>
 			<classifier>lwpd.domino.adapter.nsf</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>com.ibm.notes.java.api.win32.linux</artifactId>
 			<version>[9.0.1,)</version>
 			<classifier>Notes</classifier>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
@@ -78,12 +112,26 @@
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
 			<artifactId>xsp.http.bootstrap</artifactId>
 			<version>${xpages-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.ibm.xsp</groupId>
@@ -93,6 +141,10 @@
 				<exclusion>
 					<groupId>com.ibm.xsp</groupId>
 					<artifactId>com.ibm.pvc.servlet</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.ibm.xsp</groupId>
+					<artifactId>org.eclipse.ui</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
