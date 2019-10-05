@@ -15,6 +15,7 @@
  */
 package org.openntf.xpages.runtime;
 
+import com.ibm.commons.util.StringUtil;
 import com.ibm.xsp.application.ApplicationExImpl;
 import com.ibm.xsp.application.DesignerApplicationEx;
 import com.ibm.xsp.application.ViewHandlerEx;
@@ -32,11 +33,20 @@ import org.openntf.xpages.runtime.xsp.JakartaFactoryLookup;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JakartaFacesApplication extends DesignerApplicationEx {
+	private static final Logger log = Logger.getLogger(JakartaFacesApplication.class.getName());
+	
 	private FactoryLookup factoryLookup;
 	private ViewHandler viewHandler;
 
@@ -49,6 +59,35 @@ public class JakartaFacesApplication extends DesignerApplicationEx {
 			factoryLookupField.set(this, getFactoryLookup());
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		
+		this.registerCustomControls();
+	}
+	
+	private void registerCustomControls() {
+		URL controls = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/controls");
+		if(controls != null) {
+			if(log.isLoggable(Level.WARNING)) {
+				log.warning("searching for controls in " + controls);
+			}
+			
+			switch(StringUtil.toString(controls.getProtocol())) {
+			case "file":
+				try {
+					Path path = Paths.get(controls.toURI());
+					Files.find(path, 1, (file, attrs) ->
+						file.getFileName().toString().endsWith(".xsp-config")
+					).forEach(config -> {
+						System.out.println("registering " + config);
+					});
+				} catch (IOException | URISyntaxException e) {
+					throw new RuntimeException(e);
+				}
+				break;
+			case "jar":
+				// TODO figure out, and maybe account for "wsjar"
+				break;
+			}
 		}
 	}
 

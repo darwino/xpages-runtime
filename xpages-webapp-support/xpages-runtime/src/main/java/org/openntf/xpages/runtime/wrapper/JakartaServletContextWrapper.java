@@ -50,7 +50,7 @@ public class JakartaServletContextWrapper implements ServletContext {
         if(url == null && !path.startsWith("/")) {
             url = getClass().getResource("/" + path);
         }
-		System.out.println("getResource path " + path + " -> " + url);
+//		System.out.println("getResource path " + path + " -> " + url);
         return url;
     }
 
@@ -67,7 +67,7 @@ public class JakartaServletContextWrapper implements ServletContext {
         if(is == null && !StringUtil.isEmpty(path) && !path.startsWith("/")) {
             is = getClass().getResourceAsStream("/" + path);
         }
-		System.out.println("getResourceAsStream path " + path + " -> " + is);
+//		System.out.println("getResourceAsStream path " + path + " -> " + is);
         return is;
     }
 

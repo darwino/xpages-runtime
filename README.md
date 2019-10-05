@@ -8,7 +8,7 @@ It has the ability to run XPage classes inside the project (such as the example 
 
 ## Building
 
-To build this project, you must have a Mavenized version of the XPages runtime from Domino 10.0.1, as created by using the "XSP Artifacts" preferences pane in [Darwino Studio](https://www.darwino.com).
+To build this project, you must have a Mavenized version of the XPages runtime from Domino 10.0.1, as created by using the "XSP Artifacts" preferences pane in [Darwino Studio](https://www.darwino.com) or the [generate-domino-update-site](https://github.com/OpenNTF/generate-domino-update-site) tool.
 
 ## Running
 
@@ -21,6 +21,10 @@ DYLD_LIBRARY_PATH=/Applications/IBM Notes.app/Contents/MacOS
 ```
 
 Notes or Domino do not need to be running - indeed, it's probably best if they're not.
+
+## Open Liberty Notes
+
+When running on WebSphere/Open Liberty, it is important to ensure that no JSF or JSP features are loaded. Even the presence of the JSP feature triggers hard-coded loading of the JSF `ConfigureListener` class too early, causing problems in the XPages runtime.
 
 ## License
 
