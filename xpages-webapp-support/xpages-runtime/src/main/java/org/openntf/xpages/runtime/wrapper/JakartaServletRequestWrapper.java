@@ -24,7 +24,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.attribute.UserPrincipal;
-import java.security.Identity;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
