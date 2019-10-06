@@ -182,7 +182,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 				break;
 			}
 			
-			facesProject.refreshReferences();
+//			facesProject.refreshReferences();
 		}
 	}
 
