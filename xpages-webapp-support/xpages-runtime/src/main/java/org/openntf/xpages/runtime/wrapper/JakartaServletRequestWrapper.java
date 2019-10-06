@@ -53,16 +53,7 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
     	if(this.overridePrincipal != null) {
     		return this.overridePrincipal;
     	}
-    	Principal d = delegate.getUserPrincipal();
-    	if(d == null) {
-    		return new Principal() {
-    			@Override
-				public String getName() {
-					return "CN=Jacob Winn/O=CMS";
-				}
-    		};
-    	}
-    	return d;
+    	return delegate.getUserPrincipal();
     }
 
     @Override
