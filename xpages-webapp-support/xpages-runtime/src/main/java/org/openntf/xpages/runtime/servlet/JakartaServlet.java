@@ -1,6 +1,7 @@
 package org.openntf.xpages.runtime.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -12,11 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletConfigWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
+import com.ibm.commons.util.PathUtil;
 import com.ibm.commons.util.StringUtil;
+import com.ibm.commons.xml.DOMUtil;
+import com.ibm.commons.xml.XMLException;
+import com.ibm.commons.xml.XResult;
 import com.ibm.xsp.webapp.FacesResourceServlet;
 import com.ibm.xsp.webapp.resources.JavaResourceProvider;
-import com.ibm.xsp.webapp.resources.Resource;
 
 @WebServlet(value="/")
 public class JakartaServlet extends HttpServlet {
@@ -45,12 +51,8 @@ public class JakartaServlet extends HttpServlet {
 		
 		resources.addResourceProvider(new JavaResourceProvider("") {
 			@Override
-			public Resource getResource(HttpServletRequest paramHttpServletRequest, String paramString) {
-				return super.getResource(paramHttpServletRequest, paramString);
-			}
-			@Override
 			protected String getResourcePath(HttpServletRequest req, String path) {
-				if(Thread.currentThread().getContextClassLoader().getResourceAsStream(path) != null) {
+				if(!"/".equals(path) && Thread.currentThread().getContextClassLoader().getResourceAsStream(path) != null) {
 					return path;
 				} else {
 					return null;
@@ -63,6 +65,10 @@ public class JakartaServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = StringUtil.toString(req.getServletPath());
+		if("/".equals(path)) {
+			// Check the welcome-file-list
+			path = PathUtil.concat("/", getIndex(), '/');
+		}
 		int xspIndex = path.indexOf(".xsp");
 		if(xspIndex > -1) {
 			String pathInfo = path.substring(xspIndex+4);
@@ -77,5 +83,25 @@ public class JakartaServlet extends HttpServlet {
 	@Override
 	public void destroy() {
 		delegate.destroy();
+	}
+	
+	private String index;
+	private String getIndex() {
+		if(this.index == null) {
+			try {
+				Document webXml;
+				try(InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("/WEB-INF/web.xml")) {
+					webXml = DOMUtil.createDocument(is);
+				}
+				XResult result = DOMUtil.evaluateXPath(webXml, "/*[name()='web-app']/*[name()='welcome-file-list']/*[name()='welcome-file']/text()");
+				if(!result.isEmpty()) {
+					Node node = (Node)result.getNodes()[0];
+					return node.getTextContent();
+				}
+			} catch(IOException | XMLException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return this.index;
 	}
 }
