@@ -64,10 +64,7 @@ public class JakartaServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String path = StringUtil.toString(req.getServletPath());
 		int xspIndex = path.indexOf(".xsp");
-		if("/".equals(path)) {
-			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, "/", path);
-			delegate.service(wrap, resp);
-		} else  if(xspIndex > -1) {
+		if(xspIndex > -1) {
 			String pathInfo = path.substring(xspIndex+4);
 			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, path.substring(0, xspIndex+4), pathInfo.isEmpty() ? null : pathInfo);
 			delegate.service(wrap, resp);
