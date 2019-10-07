@@ -79,6 +79,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 			this.initLibrary();
 			initialized = true;
 		}
+		// TODO consider a precompile process at app load
 		return pages.computeIfAbsent(pageName, key -> {
 			if(log.isLoggable(Level.FINE)) {
 				log.fine("Looking for page " + pageName);
@@ -96,6 +97,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 			try {
 				String javaSource = dynamicXPageBean.translate(className, pageName, xspSource, registry);
 				String groovySource = cleanSourceForGroovy(javaSource);
+				// In JDK >= 9, it may be possible to do this with the REPL infrastructure
 				Class<? extends AbstractCompiledPageDispatcher> compiled = groovyClassLoader.parseClass(groovySource);
 				AbstractCompiledPageDispatcher page = compiled.newInstance();
 				page.init(new DispatcherParameter(this, pageName, s_errorHandler));
@@ -116,6 +118,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 	}
 	
 	private InputStream findResource(String pageName) {
+		// TODO consider allowing XPages in the root of the app
 		String path = PathUtil.concat("/WEB-INF/xpages", pageName, '/');
 		InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
 		if(is == null) {
@@ -137,10 +140,11 @@ public class DynamicPageDriver implements FacesPageDriver {
 	private final ResourceBundleSource resourceBundleSource = new ClasspathResourceBundleSource(Thread.currentThread().getContextClassLoader());
 	
 	private void registerCustomControls() {
+		// TODO investigate multithreading
 		URL controls = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/controls");
 		if(controls != null) {
-			if(log.isLoggable(Level.WARNING)) {
-				log.warning("searching for controls in " + controls);
+			if(log.isLoggable(Level.FINE)) {
+				log.fine("searching for controls in " + controls);
 			}
 			ConfigParser configParser = ConfigParserFactory.getParserInstance();
 			FacesSharableRegistry facesRegistry = ApplicationEx.getInstance().getRegistry();
@@ -187,6 +191,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 	}
 
 	private void initLibrary() {
+		// TODO investigate multithreading
 		SharableRegistryImpl facesRegistry = (SharableRegistryImpl)ApplicationEx.getInstance().getRegistry();
 		Set<String> existingLibIds = facesRegistry.getDepends().stream()
 			.map(lib -> lib.getId())
