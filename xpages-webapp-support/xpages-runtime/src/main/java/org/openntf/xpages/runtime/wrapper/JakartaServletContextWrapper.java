@@ -25,6 +25,7 @@ import org.openntf.xpages.runtime.util.XSPUtil;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.EventListener;
 import java.util.Map;
@@ -71,10 +72,16 @@ public class JakartaServletContextWrapper implements ServletContext {
         return is;
     }
 
-    @Override
-    public Set<String> getResourcePaths(String path) {
-        return delegate.getResourcePaths(path);
-    }
+	@Override
+	public Set<String> getResourcePaths(String path) {
+		Set<String> result;
+		if (StringUtil.isEmpty(path)) {
+			result = delegate.getResourcePaths("/");
+		} else {
+			result = delegate.getResourcePaths(path);
+		}
+		return result == null ? Collections.emptySet() : result;
+	}
 
     @Override
     public String getContextPath() {
