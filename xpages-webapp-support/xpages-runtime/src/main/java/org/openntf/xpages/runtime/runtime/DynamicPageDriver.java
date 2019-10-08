@@ -140,7 +140,6 @@ public class DynamicPageDriver implements FacesPageDriver {
 	private final ResourceBundleSource resourceBundleSource = new ClasspathResourceBundleSource(Thread.currentThread().getContextClassLoader());
 	
 	private void registerCustomControls() {
-		// TODO investigate multithreading
 		URL controls = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/controls");
 		if(controls != null) {
 			if(log.isLoggable(Level.FINE)) {
@@ -155,45 +154,45 @@ public class DynamicPageDriver implements FacesPageDriver {
 			case "file":
 				try {
 					Path path = Paths.get(controls.toURI());
-					Files.find(path, 1, (file, attrs) ->
-						file.getFileName().toString().endsWith(".xsp-config")
-					).forEach(configPath -> {
-						try {
-							Document xspConfig;
-							try(InputStream is = Files.newInputStream(configPath)) {
-								xspConfig = DOMUtil.createDocument(is);
+					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"))
+						.parallel()
+						.forEach(configPath -> {
+							try {
+								Document xspConfig;
+								try(InputStream is = Files.newInputStream(configPath)) {
+									xspConfig = DOMUtil.createDocument(is);
+								}
+								String namespace = StringUtil.trim(DOMUtil.evaluateXPath(xspConfig, "/faces-config/faces-config-extension/namespace-uri/text()").getStringValue()); //$NON-NLS-1$
+								configParser.createFacesLibraryFragment(
+										facesProject,
+										facesClassLoader,
+										path.relativize(configPath).toString(),
+										xspConfig.getDocumentElement(),
+										resourceBundleSource,
+										iconUrlSource,
+										namespace
+								);
+							} catch (XMLException | IOException e) {
+								throw new RuntimeException(e);
 							}
-							String namespace = StringUtil.trim(DOMUtil.evaluateXPath(xspConfig, "/faces-config/faces-config-extension/namespace-uri/text()").getStringValue()); //$NON-NLS-1$
-							configParser.createFacesLibraryFragment(
-									facesProject,
-									facesClassLoader,
-									path.relativize(configPath).toString(),
-									xspConfig.getDocumentElement(),
-									resourceBundleSource,
-									iconUrlSource,
-									namespace
-							);
-						} catch (XMLException | IOException e) {
-							throw new RuntimeException(e);
-						}
-					});
+						});
 				} catch (IOException | URISyntaxException e) {
 					throw new RuntimeException(e);
 				}
 				break;
 			case "jar":
 				// TODO figure out, and maybe account for "wsjar"
+				//   It may be fair to expect the app to be unpacked at runtime, but maybe there could be
+				//   controls in dependencies
 				break;
 			}
-			
-//			facesProject.refreshReferences();
 		}
 	}
 
 	private void initLibrary() {
-		// TODO investigate multithreading
 		SharableRegistryImpl facesRegistry = (SharableRegistryImpl)ApplicationEx.getInstance().getRegistry();
 		Set<String> existingLibIds = facesRegistry.getDepends().stream()
+			.parallel()
 			.map(lib -> lib.getId())
 			.collect(Collectors.toSet());
 		Set<String> desired = new HashSet<>(Arrays.asList(StringUtil.splitString(ApplicationEx.getInstance().getProperty("xsp.library.depends", ""), ',')));
