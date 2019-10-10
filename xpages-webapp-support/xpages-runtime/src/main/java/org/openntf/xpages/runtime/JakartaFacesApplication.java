@@ -114,10 +114,14 @@ public class JakartaFacesApplication extends DesignerApplicationEx {
 //		return prop;
 //	}
 //
-//	@Override
-//	protected ResourceBundle loadResourceBundle(String s, Locale locale) throws IOException {
-//		return super.loadResourceBundle(s, locale);
-//	}
+	@Override
+	protected ResourceBundle loadResourceBundle(String s, Locale locale) throws IOException {
+		ResourceBundle result = super.loadResourceBundle(s, locale);
+		if(result == null) {
+			result = ResourceBundle.getBundle(s, locale, Thread.currentThread().getContextClassLoader());
+		}
+		return result;
+	}
 
 //	@Override
 //	public List<?> findServices(String s) {
