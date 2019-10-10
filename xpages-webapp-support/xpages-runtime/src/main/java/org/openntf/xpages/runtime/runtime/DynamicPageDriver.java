@@ -128,6 +128,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 				String className = PageToClassNameUtil.getClassNameForPage(pageName);
 				
 				try {
+					// TODO investigate using the Bazaar's interpreter instead of compilation
 					String javaSource = dynamicXPageBean.translate(className, pageName, xspSource, registry);
 					String groovySource = cleanSourceForGroovy(javaSource);
 					// In JDK >= 9, it may be possible to do this with the REPL infrastructure
@@ -153,6 +154,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 	}
 	
 	private URL findResource(String pageName) {
+		// TODO cache the URLs
 		// TODO consider allowing XPages in the root of the app
 		String path = PathUtil.concat("/WEB-INF/xpages", pageName, '/');
 		URL is = Thread.currentThread().getContextClassLoader().getResource(path);
@@ -172,6 +174,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 	private final ResourceBundleSource resourceBundleSource = new ClasspathResourceBundleSource(Thread.currentThread().getContextClassLoader());
 	
 	private void registerCustomControls() {
+		// TODO investigate reloading when resources change
 		URL controls = Thread.currentThread().getContextClassLoader().getResource("/WEB-INF/controls");
 		if(controls != null) {
 			if(log.isLoggable(Level.FINE)) {
