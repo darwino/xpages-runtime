@@ -408,4 +408,24 @@ public class JakartaServletRequestWrapper implements HttpServletRequest {
     public DispatcherType getDispatcherType() {
         return delegate.getDispatcherType();
     }
+    
+	@Override
+	public PushBuilder newPushBuilder() {
+		return delegate.newPushBuilder();
+	}
+
+	@Override
+	public HttpServletMapping getHttpServletMapping() {
+		return delegate.getHttpServletMapping();
+	}
+
+	@Override
+	public Map<String, String> getTrailerFields() {
+		return delegate.getTrailerFields();
+	}
+
+	@Override
+	public boolean isTrailerFieldsReady() {
+		return delegate.isTrailerFieldsReady();
+	}
 }
