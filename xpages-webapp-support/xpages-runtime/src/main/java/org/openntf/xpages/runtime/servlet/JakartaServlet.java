@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.openntf.xpages.runtime.platform.JakartaPlatform;
 import org.openntf.xpages.runtime.wrapper.JakartaServletConfigWrapper;
 import org.openntf.xpages.runtime.wrapper.JakartaServletRequestWrapper;
+import org.openntf.xpages.runtime.wrapper.JakartaServletResponseWrapper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -69,14 +70,15 @@ public class JakartaServlet extends HttpServlet {
 			// Check the welcome-file-list
 			path = PathUtil.concat("/", getIndex(), '/');
 		}
+		HttpServletResponse resWrap = new JakartaServletResponseWrapper(resp);
 		int xspIndex = path.indexOf(".xsp");
 		if(xspIndex > -1) {
 			String pathInfo = path.substring(xspIndex+4);
 			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, path.substring(0, xspIndex+4), pathInfo.isEmpty() ? null : pathInfo);
-			delegate.service(wrap, resp);
+			delegate.service(wrap, resWrap);
 		} else {
 			HttpServletRequest wrap = new JakartaServletRequestWrapper(req, "/", path);
-			resources.service(wrap, resp);
+			resources.service(wrap, resWrap);
 		}
 	}
 
