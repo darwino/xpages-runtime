@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -189,7 +190,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 			case "file":
 				try {
 					Path path = Paths.get(controls.toURI());
-					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"))
+					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"), FileVisitOption.FOLLOW_LINKS)
 						.parallel()
 						.forEach(configPath -> {
 							try {
@@ -201,7 +202,7 @@ public class DynamicPageDriver implements FacesPageDriver {
 								configParser.createFacesLibraryFragment(
 										facesProject,
 										facesClassLoader,
-										path.relativize(configPath).toString(),
+										path.resolve(configPath.getFileName().toString()).toString(),
 										xspConfig.getDocumentElement(),
 										resourceBundleSource,
 										iconUrlSource,
