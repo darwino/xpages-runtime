@@ -75,6 +75,9 @@ public class ClasspathVFS extends VFS {
 	@Override
 	protected void doReadResources(String path, @SuppressWarnings("rawtypes") List result, IFilter filter) {
 		// Can't assume
+		// TODO investigate if we're in a .war file or directory context
+		//   Running from Eclipse is tough, as context.getRealPath("/") is just the src/main/webapp dir, while
+		//   resource bundles shouldn't go there
 	}
 	
 	@Override
