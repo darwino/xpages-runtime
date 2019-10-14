@@ -24,7 +24,7 @@ import org.openntf.xpages.runtime.JakartaAppExecutionContext;
 import org.openntf.xpages.runtime.JakartaApplication;
 
 import com.ibm.commons.util.StringUtil;
-import com.ibm.designer.runtime.Application;
+import com.ibm.designer.runtime.Application.IApplicationFinder;
 import com.ibm.designer.runtime.ApplicationException;
 import com.ibm.domino.napi.c.C;
 import com.ibm.domino.napi.c.Os;
@@ -107,20 +107,30 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 	@Override
 	public Object getObject(String s) {
 		if("com.ibm.xsp.designer.ApplicationFinder".equals(s)) {
-			return new Application.IApplicationFinder() {
-				@Override
-				public Application get() {
-					try {
-						JakartaAppExecutionContext ctx = new JakartaAppExecutionContext(servletContext);
-						return new JakartaApplication(ctx);
-					} catch (ApplicationException e) {
-						throw new RuntimeException(e);
-					}
+			return (IApplicationFinder) () -> {
+				if(app == null) {
+					JakartaAppExecutionContext ctx = getAppExecutionContext();
+					app = new JakartaApplication(ctx);
 				}
+				return app;
 			};
 		} else {
 			return super.getObject(s);
 		}
+	}
+	
+	private JakartaAppExecutionContext execContext;
+	private JakartaApplication app;
+	
+	private JakartaAppExecutionContext getAppExecutionContext() {
+		if(execContext == null) {
+			try {
+				execContext = new JakartaAppExecutionContext(servletContext);
+			} catch (ApplicationException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return execContext;
 	}
 
 	@Override
