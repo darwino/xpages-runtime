@@ -191,7 +191,6 @@ public class DynamicPageDriver implements FacesPageDriver {
 				try {
 					Path path = Paths.get(controls.toURI());
 					Files.find(path, 1, (file, attrs) -> file.getFileName().toString().endsWith(".xsp-config"), FileVisitOption.FOLLOW_LINKS)
-						.parallel()
 						.forEach(configPath -> {
 							try {
 								Document xspConfig;
