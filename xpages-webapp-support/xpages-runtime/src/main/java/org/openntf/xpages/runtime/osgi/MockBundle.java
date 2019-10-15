@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.cert.X509Certificate;
 import java.util.*;
 import java.util.jar.JarFile;
@@ -125,6 +128,29 @@ public class MockBundle implements Bundle {
 				}
         	} else {
         		this.manifest = new Manifest();
+        		
+        		// Check if it's available as a directory
+        		Path dir = Paths.get(path);
+        		if(Files.isDirectory(dir)) {
+        			Path manifest = dir.resolve("META-INF").resolve("MANIFEST.MF");
+        			if(Files.isRegularFile(manifest) && Files.isReadable(manifest)) {
+        				try(InputStream is = Files.newInputStream(manifest)) {
+        					this.manifest.read(is);
+        				} catch(IOException e) {
+        					throw new RuntimeException(e);
+        				}
+        			} else {
+	        			// It's also possible it's up one level, e.g. in an Eclipse workspace project
+	        			manifest = dir.getParent().resolve("MANIFEST.MF");
+	        			if(Files.isRegularFile(manifest) && Files.isReadable(manifest)) {
+	        				try(InputStream is = Files.newInputStream(manifest)) {
+	        					this.manifest.read(is);
+	        				} catch(IOException e) {
+	        					throw new RuntimeException(e);
+	        				}
+	        			}
+        			}
+        		}
         	}
     	}
     	return this.manifest;
