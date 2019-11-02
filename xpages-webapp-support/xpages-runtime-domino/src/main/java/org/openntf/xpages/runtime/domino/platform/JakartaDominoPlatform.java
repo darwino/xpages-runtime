@@ -201,5 +201,9 @@ public class JakartaDominoPlatform extends AbstractNotesDominoPlatform {
 			return false;
 		}
 	}
-	
+
+	@Override
+	public File getNotesIconsDirectory() {
+		return this.notesIconsDirectory;
+	}
 }
