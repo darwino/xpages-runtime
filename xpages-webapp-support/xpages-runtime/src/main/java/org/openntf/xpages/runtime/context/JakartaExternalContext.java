@@ -22,8 +22,6 @@ public class JakartaExternalContext extends ExternalContextEx {
 
 	@Override
 	public String encodeResourceURL(String var1) {
-		System.out.println("asking to encode " + var1);
-		
 		String result = super.encodeResourceURL(var1);
 		// Patch around the parent's "/xsp" prefix
 		// TODO do this more intelligently
